@@ -16,6 +16,7 @@ class GameScreen extends StatelessWidget {
       body: Obx(
         () {
           final isFinalizado = controller.jogoFinalizado;
+          final gerandoAnotacoes = controller.gerandoAnotacoes;
           if (controller.iniciandoJogo) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -48,6 +49,18 @@ class GameScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: controller.gerarAnotacoes,
+                      icon: gerandoAnotacoes
+                          ? const CircularProgressIndicator()
+                          : const Icon(Icons.edit_calendar_outlined),
+                    ),
+                    const SizedBox(width: 20)
+                  ],
+                ),
                 const Text('Sudoku', style: TextStyle(fontSize: 35)),
                 const SizedBox(height: 20),
                 const SudokuInformacoes(),

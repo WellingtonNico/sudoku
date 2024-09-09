@@ -24,6 +24,9 @@ class GameController extends GetxController {
   final RxInt _quantidadeDeErros = RxInt(0);
   int get quantidadeDeErros => _quantidadeDeErros.value;
 
+  final RxBool _gerandoAnotacoes = RxBool(false);
+  bool get gerandoAnotacoes => _gerandoAnotacoes.value;
+
   final RxList<Numero> _numeros = RxList([]);
   List<Numero> get numeros => _numeros.toList();
 
@@ -39,8 +42,18 @@ class GameController extends GetxController {
     _jogoIniciado.value = true;
   }
 
-  finalizar(){
+  finalizar() {
     _jogoIniciado.value = false;
+  }
+
+  gerarAnotacoes() {
+    if(gerandoAnotacoes){
+      return;
+    }
+    _gerandoAnotacoes.value = true;
+    _game.value.gerarAnotacoes();
+    _numeros.value = [...game.numeros];
+    _gerandoAnotacoes.value = false;
   }
 
   Color getCorDoNumero(Numero numero) {
@@ -57,6 +70,9 @@ class GameController extends GetxController {
   }
 
   onTapNumero(Numero numero) {
+    if(gerandoAnotacoes){
+      return;
+    }
     _numeroEmFoco.value = numero;
     _exibirTeclado.value = !numero.isRevelado;
   }

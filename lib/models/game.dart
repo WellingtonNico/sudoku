@@ -119,17 +119,36 @@ class Numero {
     isDica = valor > 0;
   }
 
+  gerarAnotacoes() {
+    if (valor > 0) {
+      return;
+    }
+    for (int i = 1; i <= 9; i++) {
+      if (isOpcaoValida(i)) {
+        if (!anotacoes.contains(i)) {
+          anotacoes.add(i);
+        }
+      }
+    }
+    valor = 0;
+  }
+
+  bool isOpcaoValida(int input) {
+    final numerosInvalidos = game.numeros
+        .where((n) =>
+            n.valor > 0 && n.linha == linha ||
+            n.coluna == coluna ||
+            n.quadrante == quadrante)
+        .map((n) => n.valor)
+        .toList();
+    if (numerosInvalidos.contains(input)) {
+      return false;
+    }
+    return true;
+  }
+
   bool onInput(int input) {
-    final numerosNaLinha = game.obterValoresDaLinha(linha);
-    if (numerosNaLinha.contains(input)) {
-      return false;
-    }
-    final numerosNaColuna = game.obterValoresDaColuna(coluna);
-    if (numerosNaColuna.contains(input)) {
-      return false;
-    }
-    final numerosNoQuadrante = game.obterValoresDoQuadrante(quadrante);
-    if (numerosNoQuadrante.contains(input)) {
+    if (!isOpcaoValida(input)) {
       return false;
     }
     valor = input;
@@ -150,7 +169,6 @@ class Numero {
     }
     // if (game.generator._canPlace(linha, coluna, input)) {
     //   valor = input;
-    //   anotacoes = [];
     //   return true;
     // } else {
     //   return false;
@@ -185,6 +203,12 @@ class Game {
   int quantidadeDeErros = 0;
   bool isIniciado = false;
   bool isFinalizado = false;
+
+  gerarAnotacoes() {
+    for (int index = 0; index < 81; index++) {
+      numeros[index].gerarAnotacoes();
+    }
+  }
 
   bool obterIsFinalizado() {
     return numeros.every((n) => n.isRevelado);
