@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
+import 'package:sudoku/models/game.dart';
+
+class GameController extends GetxController {
+  final Rx<Game> _game = Rx(Game());
+  Game get game => _game.value;
+
+  final Rx<Numero?> _numeroEmFoco = Rx(null);
+  Numero? get numeroEmFoco => _numeroEmFoco.value;
+
+  final RxBool _iniciandoJogo = RxBool(false);
+  bool get iniciandoJogo => _iniciandoJogo.value;
+
+  final RxBool _jogoIniciado = RxBool(false);
+  bool get jogoIniciado => _jogoIniciado.value;
+
+  final RxBool _jogoFinalizado = RxBool(false);
+  bool get jogoFinalizado => _jogoFinalizado.value;
+
+  final RxBool _exibirTeclado = RxBool(false);
+  bool get exibirTeclado => _exibirTeclado.value;
+
+  final RxInt _quantidadeDeErros = RxInt(0);
+  int get quantidadeDeErros => _quantidadeDeErros.value;
+
+  final RxList<Numero> _numeros = RxList([]);
+  List<Numero> get numeros => _numeros.toList();
+
+  iniciarGame(int casasVazias) async {
+    _numeros.value = [];
+    _numeroEmFoco.value = null;
+    _jogoIniciado.value = false;
+    _quantidadeDeErros.value = 0;
+    _iniciandoJogo.value = true;
+    _game.value.inicializar(casasVazias);
+    _numeros.value = game.numeros;
+    _iniciandoJogo.value = false;
+    _jogoIniciado.value = true;
+  }
+
+  Color getCorDoNumero(Numero numero) {
+    if (numero.isEqualTo(numeroEmFoco)) {
+      return Colors.blueAccent;
+    }
+    if (numeroEmFoco != null &&
+        (numero.quadrante == numeroEmFoco!.quadrante ||
+            numero.linha == numeroEmFoco!.linha ||
+            numero.coluna == numeroEmFoco!.coluna)) {
+      return const Color.fromARGB(255, 82, 82, 82);
+    }
+    return Colors.grey[600]!;
+  }
+
+  onTapNumero(Numero numero) {
+    _numeroEmFoco.value = numero;
+    _exibirTeclado.value = !numero.isRevelado;
+  }
+
+  onInput(int valor) {
+    if (!numeroEmFoco!.onInput(valor)) {
+      _quantidadeDeErros.value++;
+      if (_quantidadeDeErros.value >= 3) {
+        _jogoIniciado.value = false;
+      }
+    } else {
+      _numeroEmFoco.value = null;
+    }
+    _numeros.value = game.numeros;
+    _jogoFinalizado.value = game.obterIsFinalizado();
+  }
+
+  onAnotate(int input) {
+    numeroEmFoco!.onAnotate(input);
+    _numeros.value = [...game.numeros];
+  }
+}
