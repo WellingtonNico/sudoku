@@ -15,6 +15,7 @@ class GameScreen extends StatelessWidget {
     return Scaffold(
       body: Obx(
         () {
+          final isFinalizado = controller.jogoFinalizado;
           if (controller.iniciandoJogo) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -27,15 +28,15 @@ class GameScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: ()=>controller.iniciarGame(45),
+                    onPressed: () => controller.iniciarGame(45),
                     child: const Text('Iniciar jogo fácil'),
                   ),
                   ElevatedButton(
-                    onPressed: ()=>controller.iniciarGame(50),
+                    onPressed: () => controller.iniciarGame(50),
                     child: const Text('Iniciar jogo médio'),
                   ),
                   ElevatedButton(
-                    onPressed: ()=>controller.iniciarGame(55),
+                    onPressed: () => controller.iniciarGame(55),
                     child: const Text('Iniciar jogo difícil'),
                   ),
                 ],
@@ -43,17 +44,23 @@ class GameScreen extends StatelessWidget {
             );
           }
 
-          return const Center(
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Sudoku', style: TextStyle(fontSize: 35)),
-                SizedBox(height: 20),
-                SudokuInformacoes(),
-                SizedBox(height: 10),
-                SudokuGrid(),
-                SizedBox(height: 20),
-                SudokuTeclado()
+                const Text('Sudoku', style: TextStyle(fontSize: 35)),
+                const SizedBox(height: 20),
+                const SudokuInformacoes(),
+                const SizedBox(height: 10),
+                const SudokuGrid(),
+                const SizedBox(height: 20),
+                if (isFinalizado)
+                  ElevatedButton(
+                    onPressed: controller.finalizar,
+                    child: const Text('Finalizar'),
+                  )
+                else
+                  const SudokuTeclado(),
               ],
             ),
           );

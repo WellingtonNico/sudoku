@@ -55,7 +55,6 @@ class SudokuGenerator {
 
     int row = empty[0];
     int col = empty[1];
-
     for (int num = 1; num <= 9; num++) {
       if (_canPlace(row, col, num)) {
         grid[row][col] = num;
@@ -65,8 +64,14 @@ class SudokuGenerator {
         grid[row][col] = 0;
       }
     }
-
     return false;
+  }
+
+  bool canSolve() {
+    final oldGrid = [...grid];
+    final canSolve = _solveSudoku();
+    grid = oldGrid;
+    return canSolve;
   }
 
   List<int> _findEmpty() {
@@ -128,14 +133,21 @@ class Numero {
       return false;
     }
     valor = input;
-    final numerosParaRemoverAnotacao = game.numeros
-        .where((n) =>
-            n.linha == linha || n.coluna == coluna || n.quadrante == quadrante)
-        .toList();
-    for (int index = 0; index < numerosParaRemoverAnotacao.length; index++) {
-      numerosParaRemoverAnotacao[index].removerAnotacao(input);
+    if (game.generator.canSolve()) {
+      final numerosParaRemoverAnotacao = game.numeros
+          .where((n) =>
+              n.linha == linha ||
+              n.coluna == coluna ||
+              n.quadrante == quadrante)
+          .toList();
+      for (int index = 0; index < numerosParaRemoverAnotacao.length; index++) {
+        numerosParaRemoverAnotacao[index].removerAnotacao(input);
+      }
+      return true;
+    } else {
+      valor = 0;
+      return false;
     }
-    return true;
     // if (game.generator._canPlace(linha, coluna, input)) {
     //   valor = input;
     //   anotacoes = [];

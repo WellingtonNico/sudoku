@@ -39,6 +39,10 @@ class GameController extends GetxController {
     _jogoIniciado.value = true;
   }
 
+  finalizar(){
+    _jogoIniciado.value = false;
+  }
+
   Color getCorDoNumero(Numero numero) {
     if (numero.isEqualTo(numeroEmFoco)) {
       return Colors.blueAccent;
