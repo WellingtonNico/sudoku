@@ -43,8 +43,8 @@ class SudokuTeclado extends StatelessWidget {
                 width: 35,
                 decoration: BoxDecoration(
                   color: isAnotacao && anotacoes.contains(n)
-                      ? const Color.fromARGB(255, 75, 91, 110)
-                      : const Color.fromARGB(137, 158, 158, 158),
+                      ?  Colors.blueAccent
+                      : const Color.fromARGB(135, 210, 210, 210),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(

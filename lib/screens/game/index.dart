@@ -28,6 +28,8 @@ class GameScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const Text('Sudoku', style: TextStyle(fontSize: 35)),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () => controller.iniciarGame(45),
                     child: const Text('Iniciar jogo fácil'),
