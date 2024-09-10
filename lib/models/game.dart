@@ -68,7 +68,7 @@ class SudokuGenerator {
   }
 
   bool canSolve() {
-    final oldGrid = [...grid];
+    final oldGrid = List<List<int>>.from(grid.map((l) => List<int>.from(l)));
     final canSolve = _solveSudoku();
     grid = oldGrid;
     return canSolve;
@@ -148,10 +148,10 @@ class Numero {
   }
 
   bool onInput(int input) {
-    if (!isOpcaoValida(input)) {
+    if (!game.generator._canPlace(linha - 1, coluna - 1, input)) {
       return false;
     }
-    valor = input;
+    game.generator.grid[linha - 1][coluna - 1] = valor;
     if (game.generator.canSolve()) {
       final numerosParaRemoverAnotacao = game.numeros
           .where((n) =>
@@ -162,9 +162,11 @@ class Numero {
       for (int index = 0; index < numerosParaRemoverAnotacao.length; index++) {
         numerosParaRemoverAnotacao[index].removerAnotacao(input);
       }
+      valor = input;
       return true;
     } else {
       valor = 0;
+      game.generator.grid[linha - 1][coluna - 1] = 0;
       return false;
     }
     // if (game.generator._canPlace(linha, coluna, input)) {
@@ -231,11 +233,12 @@ class Game {
       for (int coluna = 1; coluna <= 9; coluna++) {
         numeros.add(
           Numero(
-              game: this,
-              linha: linha,
-              coluna: coluna,
-              quadrante: calcularQuadranteIndex(linha, coluna),
-              valor: generator.grid[linha - 1][coluna - 1]),
+            game: this,
+            linha: linha,
+            coluna: coluna,
+            quadrante: calcularQuadranteIndex(linha, coluna),
+            valor: generator.grid[linha - 1][coluna - 1],
+          ),
         );
       }
     }

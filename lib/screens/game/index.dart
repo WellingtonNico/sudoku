@@ -30,17 +30,22 @@ class GameScreen extends StatelessWidget {
                 children: [
                   const Text('Sudoku', style: TextStyle(fontSize: 35)),
                   const SizedBox(height: 20),
+                  const Text(
+                    'Selecione o nível do jogo',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () => controller.iniciarGame(45),
-                    child: const Text('Iniciar jogo fácil'),
+                    child: const Text('Fácil'),
                   ),
                   ElevatedButton(
                     onPressed: () => controller.iniciarGame(50),
-                    child: const Text('Iniciar jogo médio'),
+                    child: const Text('Médio'),
                   ),
                   ElevatedButton(
                     onPressed: () => controller.iniciarGame(55),
-                    child: const Text('Iniciar jogo difícil'),
+                    child: const Text('Difícil'),
                   ),
                 ],
               ),
