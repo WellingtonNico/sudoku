@@ -11,7 +11,7 @@ class SudokuGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     GameController controller = Get.find();
     return Obx(() {
-      final numeros = controller.numeros;
+      final numeros = controller.game.numeros;
       final quadrantes = obterNumerosPorQuadranteOrdenados(numeros);
       return Container(
         color: Colors.white60,

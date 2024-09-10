@@ -24,17 +24,13 @@ class GameController extends GetxController {
   final RxBool _gerandoAnotacoes = RxBool(false);
   bool get gerandoAnotacoes => _gerandoAnotacoes.value;
 
-  final RxList<Numero> _numeros = RxList([]);
-  List<Numero> get numeros => _numeros.toList();
-
-  iniciarGame(int casasVazias) async {
-    _numeros.value = [];
+  iniciarGame(int casasVazias) async {    
     _numeroEmFoco.value = null;
     _jogoIniciado.value = false;
     _quantidadeDeErros.value = 0;
     _iniciandoJogo.value = true;
-    _game.value.inicializar(casasVazias);
-    _numeros.value = game.numeros;
+    _game.value.inicializar(casasVazias);   
+    _game.refresh(); 
     _iniciandoJogo.value = false;
     _jogoIniciado.value = true;
   }
@@ -50,7 +46,7 @@ class GameController extends GetxController {
     }
     _gerandoAnotacoes.value = true;
     _game.value.gerarAnotacoes();
-    _numeros.value = [...game.numeros];
+    _game.refresh();    
     _gerandoAnotacoes.value = false;
   }
 
@@ -83,13 +79,13 @@ class GameController extends GetxController {
     } else {
       _numeroEmFoco.refresh();
     }
-    _numeros.refresh();
+    _game.refresh();
     _jogoFinalizado.value = game.obterIsFinalizado();
   }
 
   onAnotate(int input) {
     numeroEmFoco!.onAnotate(input);    
-    _numeros.refresh();
+    _game.refresh();
     _numeroEmFoco.refresh();
   }
 }
