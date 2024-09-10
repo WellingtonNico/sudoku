@@ -18,9 +18,6 @@ class GameController extends GetxController {
   final RxBool _jogoFinalizado = RxBool(false);
   bool get jogoFinalizado => _jogoFinalizado.value;
 
-  final RxBool _exibirTeclado = RxBool(false);
-  bool get exibirTeclado => _exibirTeclado.value;
-
   final RxInt _quantidadeDeErros = RxInt(0);
   int get quantidadeDeErros => _quantidadeDeErros.value;
 
@@ -44,6 +41,7 @@ class GameController extends GetxController {
 
   finalizar() {
     _jogoIniciado.value = false;
+    _jogoFinalizado.value = false;
   }
 
   gerarAnotacoes() {
@@ -73,8 +71,7 @@ class GameController extends GetxController {
     if(gerandoAnotacoes){
       return;
     }
-    _numeroEmFoco.value = numero;
-    _exibirTeclado.value = !numero.isRevelado;
+    _numeroEmFoco.value = numero;    
   }
 
   onInput(int valor) {
@@ -84,14 +81,15 @@ class GameController extends GetxController {
         _jogoIniciado.value = false;
       }
     } else {
-      _numeroEmFoco.value = null;
+      _numeroEmFoco.refresh();
     }
-    _numeros.value = game.numeros;
+    _numeros.refresh();
     _jogoFinalizado.value = game.obterIsFinalizado();
   }
 
   onAnotate(int input) {
-    numeroEmFoco!.onAnotate(input);
-    _numeros.value = [...game.numeros];
+    numeroEmFoco!.onAnotate(input);    
+    _numeros.refresh();
+    _numeroEmFoco.refresh();
   }
 }

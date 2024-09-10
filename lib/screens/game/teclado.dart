@@ -17,35 +17,46 @@ class SudokuTeclado extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            getBotoesNumeros(20, opacity == 1 ? controller.onAnotate : null),
+            getBotoesNumeros(
+                20, opacity == 1 ? controller.onAnotate : null, true),
             const SizedBox(height: 20),
-            getBotoesNumeros(30, opacity == 1 ? controller.onInput : null),
+            getBotoesNumeros(
+                30, opacity == 1 ? controller.onInput : null, false),
           ],
         ),
       );
     });
   }
 
-  Row getBotoesNumeros(double fontSize, Function(int)? onTap) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        for (int n in lista9)
-          InkWell(
-            onTap: () => onTap?.call(n),
-            child: Container(
-     
-              width: 35,
-              decoration: BoxDecoration(color:const Color.fromARGB(137, 158, 158, 158), borderRadius: BorderRadius.circular(5)),
-              child: Center(
-                child: Text(
-                  n.toString(),
-                  style: TextStyle(fontSize: fontSize),
+  Widget getBotoesNumeros(
+      double fontSize, Function(int)? onTap, bool isAnotacao) {
+    GameController controller = Get.find();
+    return Obx(() {
+      final anotacoes = controller.numeroEmFoco?.anotacoes ?? [];
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          for (int n in lista9)
+            InkWell(
+              onTap: () => onTap?.call(n),
+              child: Container(
+                width: 35,
+                decoration: BoxDecoration(
+                  color: isAnotacao && anotacoes.contains(n)
+                      ? const Color.fromARGB(255, 75, 91, 110)
+                      : const Color.fromARGB(137, 158, 158, 158),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Center(
+                  child: Text(
+                    n.toString(),
+                    style: TextStyle(fontSize: fontSize),
+                  ),
                 ),
               ),
-            ),
-          )
-      ],
-    );
+            )
+        ],
+      );
+    });
   }
 }
