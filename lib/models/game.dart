@@ -210,11 +210,11 @@ class Game {
   getQuantidadeCasasVazias() {
     switch (nivel){
       case Nivel.facil:
-        return 55;
+        return 45;
       case Nivel.medio:
         return 50;
       default:
-        return 45;
+        return 55;
     }
   }
 
