@@ -11,7 +11,10 @@ class SudokuTeclado extends StatelessWidget {
   Widget build(BuildContext context) {
     GameController controller = Get.find();
     return Obx(() {
-      final opacity = controller.numeroEmFoco?.isRevelado == false ? 1.0 : 0.0;
+      final isIniciado = controller.game.isIniciado;
+      final opacity = isIniciado && controller.numeroEmFoco?.isRevelado == false
+          ? 1.0
+          : 0.0;
       return Opacity(
         opacity: opacity,
         child: Column(
@@ -43,7 +46,7 @@ class SudokuTeclado extends StatelessWidget {
                 width: 35,
                 decoration: BoxDecoration(
                   color: isAnotacao && anotacoes.contains(n)
-                      ?  Colors.blueAccent
+                      ? Colors.blueAccent
                       : const Color.fromARGB(135, 210, 210, 210),
                   borderRadius: BorderRadius.circular(5),
                 ),

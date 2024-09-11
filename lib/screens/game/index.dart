@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:sudoku/models/game.dart';
 import 'package:sudoku/screens/game/controller.dart';
 import 'package:sudoku/screens/game/grid.dart';
 import 'package:sudoku/screens/game/informacoes.dart';
@@ -16,13 +17,25 @@ class GameScreen extends StatelessWidget {
       body: Obx(
         () {
           final isFinalizado = controller.jogoFinalizado;
+          final isIniciado = controller.game.isIniciado;
           final gerandoAnotacoes = controller.gerandoAnotacoes;
           if (controller.iniciandoJogo) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15),
+                  Text(
+                    'Gerando jogo, aguarde...',
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
             );
           }
-          if (!controller.jogoIniciado) {
+          if (!isIniciado) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -36,16 +49,16 @@ class GameScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () => controller.iniciarGame(45),
-                    child: const Text('Fácil'),
+                    onPressed: () => controller.iniciarGame(Nivel.facil),
+                    child: Text(Nivel.facil.label),
                   ),
                   ElevatedButton(
-                    onPressed: () => controller.iniciarGame(50),
-                    child: const Text('Médio'),
+                    onPressed: () => controller.iniciarGame(Nivel.medio),
+                    child: Text(Nivel.medio.label),
                   ),
                   ElevatedButton(
-                    onPressed: () => controller.iniciarGame(55),
-                    child: const Text('Difícil'),
+                    onPressed: () => controller.iniciarGame(Nivel.dificil),
+                    child: Text(Nivel.dificil.label),
                   ),
                 ],
               ),

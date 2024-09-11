@@ -1,101 +1,17 @@
 import 'dart:math';
 
+import 'package:get/get.dart';
+
 const lista9 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-class SudokuGenerator {
-  List<List<int>> grid = [];
+enum Nivel {
+  facil('Fácil'),
+  medio('Médio'),
+  dificil('Difícil');
 
-  void generateSudoku(int numHoles) {
-    grid = List.generate(9, (_) => List.filled(9, 0));
-    _fillDiagonalSubgrids();
-    _solveSudoku();
-    _removeNumbers(numHoles);
-  }
+  final String label;
 
-  void _fillDiagonalSubgrids() {
-    for (int i = 0; i < 9; i += 3) {
-      _fillSubgrid(i, i);
-    }
-  }
-
-  void _fillSubgrid(int row, int col) {
-    List<int> nums = [...lista9]..shuffle();
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        grid[row + i][col + j] = nums.removeLast();
-      }
-    }
-  }
-
-  bool _canPlace(int row, int col, int num) {
-    for (int i = 0; i < 9; i++) {
-      if (grid[row][i] == num || grid[i][col] == num) {
-        return false;
-      }
-    }
-
-    int startRow = row - row % 3;
-    int startCol = col - col % 3;
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (grid[startRow + i][startCol + j] == num) {
-          return false;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  bool _solveSudoku() {
-    List<int> empty = _findEmpty();
-    if (empty.isEmpty) {
-      return true;
-    }
-
-    int row = empty[0];
-    int col = empty[1];
-    for (int num = 1; num <= 9; num++) {
-      if (_canPlace(row, col, num)) {
-        grid[row][col] = num;
-        if (_solveSudoku()) {
-          return true;
-        }
-        grid[row][col] = 0;
-      }
-    }
-    return false;
-  }
-
-  bool canSolve() {
-    final oldGrid = List<List<int>>.from(grid.map((l) => List<int>.from(l)));
-    final canSolve = _solveSudoku();
-    grid = oldGrid;
-    return canSolve;
-  }
-
-  List<int> _findEmpty() {
-    for (int i = 0; i < 9; i++) {
-      for (int j = 0; j < 9; j++) {
-        if (grid[i][j] == 0) {
-          return [i, j];
-        }
-      }
-    }
-    return [];
-  }
-
-  void _removeNumbers(int numHoles) {
-    Random rand = Random();
-    while (numHoles > 0) {
-      int row = rand.nextInt(9);
-      int col = rand.nextInt(9);
-      if (grid[row][col] != 0) {
-        grid[row][col] = 0;
-        numHoles--;
-      }
-    }
-  }
+  const Nivel(this.label);
 }
 
 class Numero {
@@ -134,47 +50,37 @@ class Numero {
   }
 
   bool isOpcaoValida(int input) {
-    final numerosInvalidos = game.numeros
-        .where((n) =>
-            n.valor > 0 && n.linha == linha ||
-            n.coluna == coluna ||
-            n.quadrante == quadrante)
-        .map((n) => n.valor)
-        .toList();
-    if (numerosInvalidos.contains(input)) {
-      return false;
+    final grid = game.toGrid();
+    for (int i = 0; i < 9; i++) {
+      if (grid[linha][i] == input || grid[i][coluna] == input) {
+        return false;
+      }
+    }
+    int startRow = linha - linha % 3;
+    int startCol = coluna - coluna % 3;
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        if (grid[startRow + i][startCol + j] == input) {
+          return false;
+        }
+      }
     }
     return true;
   }
 
   bool onInput(int input) {
-    if (!game.generator._canPlace(linha - 1, coluna - 1, input)) {
+    if (!isOpcaoValida(input)) {
+      game.quantidadeDeErros++;
       return false;
     }
-    game.generator.grid[linha - 1][coluna - 1] = valor;
-    if (game.generator.canSolve()) {
-      final numerosParaRemoverAnotacao = game.numeros
-          .where((n) =>
-              n.linha == linha ||
-              n.coluna == coluna ||
-              n.quadrante == quadrante)
-          .toList();
-      for (int index = 0; index < numerosParaRemoverAnotacao.length; index++) {
-        numerosParaRemoverAnotacao[index].removerAnotacao(input);
-      }
-      valor = input;
+    valor = input;
+    if (game.podeSerResolvido()) {
       return true;
     } else {
       valor = 0;
-      game.generator.grid[linha - 1][coluna - 1] = 0;
+      game.quantidadeDeErros++;
       return false;
     }
-    // if (game.generator._canPlace(linha, coluna, input)) {
-    //   valor = input;
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   }
 
   onAnotate(int input) {
@@ -200,11 +106,46 @@ class Numero {
 }
 
 class Game {
-  SudokuGenerator generator = SudokuGenerator();
   List<Numero> numeros = [];
   int quantidadeDeErros = 0;
   bool isIniciado = false;
   bool isFinalizado = false;
+  Nivel? nivel;
+
+  List<List<int>> toGrid() {
+    List<List<int>> lista = [];
+    for (int linha = 0; linha < 9; linha++) {
+      lista.add(
+        numeros.where((n) => n.linha == linha).map((n) => n.valor).toList(),
+      );
+    }
+
+    return lista;
+  }
+
+  int obterQuantidadeCasasVazias() {
+    switch (nivel) {
+      case Nivel.facil:
+        return 45;
+      case Nivel.medio:
+        return 55;
+      default:
+
+        /// nível difícil
+        return 55;
+    }
+  }
+
+  inicializar(Nivel nivel) async {
+    this.nivel = nivel;
+    criarNumeros();
+    preencherQuadrantesDiagonais();
+    resolverSudoku();
+    removerNumerosAleatorios();
+    quantidadeDeErros = 0;
+    isIniciado = true;
+    isFinalizado = false;
+  }
 
   gerarAnotacoes() {
     for (int index = 0; index < 81; index++) {
@@ -213,40 +154,100 @@ class Game {
   }
 
   bool obterIsFinalizado() {
-    return numeros.every((n) => n.isRevelado);
+    return quantidadeDeErros >= 3 || numeros.every((n) => n.isRevelado);
   }
 
   int obterQuantidadeRevelados() {
     return numeros.where((n) => n.isRevelado).length;
   }
 
-  void inicializar(int casasVazias) {
-    criarNumeros(casasVazias);
-    quantidadeDeErros = 0;
-    isIniciado = true;
-  }
-
-  void criarNumeros(int casasVazias) {
+  void criarNumeros() {
     numeros.clear();
-    generator.generateSudoku(casasVazias);
-    for (int linha = 1; linha <= 9; linha++) {
-      for (int coluna = 1; coluna <= 9; coluna++) {
+    for (int linha = 0; linha < 9; linha++) {
+      for (int coluna = 0; coluna < 9; coluna++) {
         numeros.add(
           Numero(
             game: this,
             linha: linha,
             coluna: coluna,
             quadrante: calcularQuadranteIndex(linha, coluna),
-            valor: generator.grid[linha - 1][coluna - 1],
+            valor: 0,
           ),
         );
       }
     }
   }
 
+  void preencherQuadrantesDiagonais() {
+    final diagonais = [1, 5, 9, 3, 7];
+    for (int diagonal in diagonais) {
+      final numerosDoQuadrante = obterNumerosDoQuadrante(diagonal);
+      if ([1, 5, 9].contains(diagonal)) {
+        final nums = List.from(lista9);
+        nums.shuffle();
+        for (int index = 0; index < numerosDoQuadrante.length; index++) {
+          numerosDoQuadrante[index].valor = nums[index];
+        }
+      } else {
+        Random rand = Random();
+        for (final numero in numerosDoQuadrante) {
+          int? valor;
+          do {
+            valor = rand.nextInt(9) + 1;
+          } while (!numero.isOpcaoValida(valor));
+          numero.valor = valor;
+        }
+      }
+    }
+  }
+
+  Numero? obterPrimeiroVazio() {
+    return numeros.firstWhereOrNull((numero) => numero.valor == 0);
+  }
+
+  bool resolverSudoku() {
+    final vazio = obterPrimeiroVazio();
+    if (vazio == null) {
+      return true;
+    }
+    for (int valor = 1; valor <= 9; valor++) {
+      if (!vazio.isOpcaoValida(valor)) {
+        print('negando valor $valor');
+        continue;
+      }
+      ;
+      vazio.valor = valor;
+      if (resolverSudoku()) return true;
+    }
+    return false;
+  }
+
+  bool podeSerResolvido() {
+    final numerosOriginais = List<Numero>.from(numeros);
+    final pode = resolverSudoku();
+    numeros = numerosOriginais;
+    return pode;
+  }
+
+  removerNumerosAleatorios() {
+    var casasVazias = obterQuantidadeCasasVazias();
+    casasVazias = 0;
+    Random rand = Random();
+    while (casasVazias > 0) {
+      int linha = rand.nextInt(9);
+      int coluna = rand.nextInt(9);
+      final numero =
+          numeros.firstWhere((n) => n.linha == linha && n.coluna == coluna);
+      if (numero.valor > 0) {
+        numero.valor = 0;
+        casasVazias--;
+      }
+    }
+  }
+
   int calcularQuadranteIndex(int linha, int coluna) {
-    final horizontal = (coluna / 3).ceil();
-    final vertical = (linha / 3).ceil();
+    final horizontal = ((coluna + 1) / 3).ceil();
+    final vertical = ((linha + 1) / 3).ceil();
     return vertical * 3 - (3 - horizontal);
   }
 
