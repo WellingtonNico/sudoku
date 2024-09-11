@@ -2,6 +2,16 @@ import 'dart:math';
 
 const lista9 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+enum Nivel {
+  facil("Fácil"),
+  medio("Médio"),
+  dificil("Difícil");
+
+  final String label;
+
+  const Nivel(this.label);
+}
+
 class SudokuGenerator {
   List<List<int>> grid = [];
 
@@ -134,24 +144,14 @@ class Numero {
   }
 
   bool isOpcaoValida(int input) {
-    final numerosInvalidos = game.numeros
-        .where((n) =>
-            n.valor > 0 && n.linha == linha ||
-            n.coluna == coluna ||
-            n.quadrante == quadrante)
-        .map((n) => n.valor)
-        .toList();
-    if (numerosInvalidos.contains(input)) {
-      return false;
-    }
-    return true;
+    return game.generator._canPlace(linha - 1, coluna - 1, input);
   }
 
   bool onInput(int input) {
-    if (!game.generator._canPlace(linha - 1, coluna - 1, input)) {
+    if (!isOpcaoValida(input)) {
       return false;
     }
-    game.generator.grid[linha - 1][coluna - 1] = valor;
+    game.generator.grid[linha - 1][coluna - 1] = input;
     if (game.generator.canSolve()) {
       final numerosParaRemoverAnotacao = game.numeros
           .where((n) =>
@@ -159,8 +159,8 @@ class Numero {
               n.coluna == coluna ||
               n.quadrante == quadrante)
           .toList();
-      for (int index = 0; index < numerosParaRemoverAnotacao.length; index++) {
-        numerosParaRemoverAnotacao[index].removerAnotacao(input);
+      for (Numero numero in numerosParaRemoverAnotacao) {
+        numero.removerAnotacao(input);
       }
       valor = input;
       return true;
@@ -205,6 +205,18 @@ class Game {
   int quantidadeDeErros = 0;
   bool isIniciado = false;
   bool isFinalizado = false;
+  Nivel? nivel;
+
+  getQuantidadeCasasVazias() {
+    switch (nivel){
+      case Nivel.facil:
+        return 55;
+      case Nivel.medio:
+        return 50;
+      default:
+        return 45;
+    }
+  }
 
   gerarAnotacoes() {
     for (int index = 0; index < 81; index++) {
@@ -220,15 +232,16 @@ class Game {
     return numeros.where((n) => n.isRevelado).length;
   }
 
-  void inicializar(int casasVazias) {
-    criarNumeros(casasVazias);
+  void inicializar(Nivel nivel) {
+    this.nivel = nivel;
+    criarNumeros();
     quantidadeDeErros = 0;
     isIniciado = true;
   }
 
-  void criarNumeros(int casasVazias) {
+  void criarNumeros() {
     numeros.clear();
-    generator.generateSudoku(casasVazias);
+    generator.generateSudoku(getQuantidadeCasasVazias());
     for (int linha = 1; linha <= 9; linha++) {
       for (int coluna = 1; coluna <= 9; coluna++) {
         numeros.add(

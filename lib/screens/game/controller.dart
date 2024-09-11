@@ -24,12 +24,12 @@ class GameController extends GetxController {
   final RxBool _gerandoAnotacoes = RxBool(false);
   bool get gerandoAnotacoes => _gerandoAnotacoes.value;
 
-  iniciarGame(int casasVazias) async {    
+  iniciarGame(Nivel nivel) async {    
     _numeroEmFoco.value = null;
     _jogoIniciado.value = false;
     _quantidadeDeErros.value = 0;
     _iniciandoJogo.value = true;
-    _game.value.inicializar(casasVazias);   
+    _game.value.inicializar(nivel);   
     _game.refresh(); 
     _iniciandoJogo.value = false;
     _jogoIniciado.value = true;
