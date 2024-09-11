@@ -37,6 +37,7 @@ class SudokuGrid extends StatelessWidget {
     GameController controller = Get.find();
     return GridView.count(
       padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: .5,
       mainAxisSpacing: .5,
       crossAxisCount: 3,
@@ -58,6 +59,7 @@ class SudokuGrid extends StatelessWidget {
   Widget getGridAnotacoes(Numero numero) {
     return GridView.count(
         padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 3,
         children: [
           for (var n in lista9)
@@ -65,7 +67,11 @@ class SudokuGrid extends StatelessWidget {
               Center(
                 child: Text(
                   n.toString(),
-                  style: const TextStyle(fontSize: 11, letterSpacing: 0),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    letterSpacing: 0,
+                    height: 1,
+                  ),
                 ),
               )
             else
