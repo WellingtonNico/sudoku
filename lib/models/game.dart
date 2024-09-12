@@ -5,21 +5,21 @@ import 'package:get/get.dart';
 const lista9 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 class Game {
+  final niveis = {
+    "Fácil": 45,
+    "Médio": 50,
+    "Difícil": 55,
+    "Extremo": 60,
+  };
   List<Numero> numeros = [];
   int quantidadeDeErros = 0;
   bool isIniciado = false;
   bool isFinalizado = false;
-  Nivel? nivel;
+  late String nivel;
+  List<int> backup = [];
 
   getQuantidadeCasasVazias() {
-    switch (nivel) {
-      case Nivel.facil:
-        return 45;
-      case Nivel.medio:
-        return 50;
-      default:
-        return 55;
-    }
+    return niveis[nivel];
   }
 
   gerarAnotacoes() {
@@ -36,7 +36,7 @@ class Game {
     return numeros.where((n) => n.isRevelado).length;
   }
 
-  void inicializar(Nivel nivel) {
+  void inicializar(String nivel) {
     this.nivel = nivel;
     criarNumeros();
     preencherQuadrantesDiagonais();
@@ -115,15 +115,21 @@ class Game {
   }
 
   bool podeSerResolvido() {
-    final numerosBack = obterBackup();
+    gerarBackup();
     resolver();
     final vazio = obterPrimeiroVazio();
-    numeros = numerosBack;
+    restaurarBackup();
     return vazio == null;
   }
 
-  List<Numero> obterBackup() {
-    return numeros.map((n) => n.obterClone()).toList();
+  restaurarBackup() {
+    for (Numero n in numeros) {
+      n.valor = backup[n.index];
+    }
+  }
+
+  gerarBackup() {
+    backup = numeros.map((n) => n.valor).toList();
   }
 
   int calcularNumeroDoQuadrante(int linha, int coluna) {
@@ -158,15 +164,6 @@ class Game {
   }
 }
 
-enum Nivel {
-  facil("Fácil"),
-  medio("Médio"),
-  dificil("Difícil");
-
-  final String label;
-
-  const Nivel(this.label);
-}
 
 class Numero {
   final int index;
@@ -226,12 +223,13 @@ class Numero {
     if (!isOpcaoValida(input)) {
       return false;
     }
-    final backup = game.obterBackup();
+    game.gerarBackup();
     valor = input;
     if (!game.podeSerResolvido()) {
-      game.numeros = backup;
+      game.restaurarBackup();
       return false;
     }
+    valor = input;
     final numerosParaRemoverAnotacao = game.numeros
         .where((n) =>
             n.linha == linha || n.coluna == coluna || n.quadrante == quadrante)

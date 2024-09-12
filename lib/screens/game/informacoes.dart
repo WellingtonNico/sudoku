@@ -11,7 +11,7 @@ class SudokuInformacoes extends StatelessWidget {
     GameController controller = Get.find();
     return Obx(() {
       final quantidadeRevelados = controller.game.obterQuantidadeRevelados();
-      final nivelLabel = controller.game.nivel!.label;
+      final nivelLabel = controller.game.nivel;
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
-import 'package:sudoku/models/game.dart';
 import 'package:sudoku/screens/game/controller.dart';
 import 'package:sudoku/screens/game/grid.dart';
 import 'package:sudoku/screens/game/informacoes.dart';
@@ -36,18 +35,11 @@ class GameScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => controller.iniciarGame(Nivel.facil),
-                    child: Text(Nivel.facil.label),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => controller.iniciarGame(Nivel.medio),
-                    child: Text(Nivel.medio.label),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => controller.iniciarGame(Nivel.dificil),
-                    child: Text(Nivel.dificil.label),
-                  ),
+                  for (var entry in controller.game.niveis.entries)
+                    ElevatedButton(
+                      onPressed: () => controller.iniciarGame(entry.key),
+                      child: Text(entry.key),
+                    ),
                 ],
               ),
             );

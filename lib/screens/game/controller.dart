@@ -24,13 +24,13 @@ class GameController extends GetxController {
   final RxBool _gerandoAnotacoes = RxBool(false);
   bool get gerandoAnotacoes => _gerandoAnotacoes.value;
 
-  iniciarGame(Nivel nivel) async {    
+  iniciarGame(String nivel) async {
     _numeroEmFoco.value = null;
     _jogoIniciado.value = false;
     _quantidadeDeErros.value = 0;
     _iniciandoJogo.value = true;
-    _game.value.inicializar(nivel);   
-    _game.refresh(); 
+    _game.value.inicializar(nivel);
+    _game.refresh();
     _iniciandoJogo.value = false;
     _jogoIniciado.value = true;
   }
@@ -41,12 +41,12 @@ class GameController extends GetxController {
   }
 
   gerarAnotacoes() {
-    if(gerandoAnotacoes){
+    if (gerandoAnotacoes) {
       return;
     }
     _gerandoAnotacoes.value = true;
     _game.value.gerarAnotacoes();
-    _game.refresh();    
+    _game.refresh();
     _gerandoAnotacoes.value = false;
   }
 
@@ -64,10 +64,10 @@ class GameController extends GetxController {
   }
 
   onTapNumero(Numero numero) {
-    if(gerandoAnotacoes){
+    if (gerandoAnotacoes) {
       return;
     }
-    _numeroEmFoco.value = numero;    
+    _numeroEmFoco.value = numero;
   }
 
   onInput(int valor) {
@@ -76,15 +76,14 @@ class GameController extends GetxController {
       if (_quantidadeDeErros.value >= 3) {
         _jogoIniciado.value = false;
       }
-    } else {
-      _numeroEmFoco.refresh();
-    }
+    } else {}
+    _numeroEmFoco.refresh();
     _game.refresh();
     _jogoFinalizado.value = game.obterIsFinalizado();
   }
 
   onAnotate(int input) {
-    numeroEmFoco!.onAnotate(input);    
+    numeroEmFoco!.onAnotate(input);
     _game.refresh();
     _numeroEmFoco.refresh();
   }
