@@ -48,17 +48,21 @@ class Game {
 
   void criarNumeros() {
     numeros.clear();
+    int index = 0;
     for (int linha = 1; linha <= 9; linha++) {
       for (int coluna = 1; coluna <= 9; coluna++) {
         numeros.add(
           Numero(
-              game: this,
-              linha: linha,
-              coluna: coluna,
-              quadrante: calcularNumeroDoQuadrante(linha, coluna),
-              valor: 0,
-              anotacoes: []),
+            index: index,
+            game: this,
+            linha: linha,
+            coluna: coluna,
+            quadrante: calcularNumeroDoQuadrante(linha, coluna),
+            valor: 0,
+            anotacoes: [],
+          ),
         );
+        index++;
       }
     }
   }
@@ -111,11 +115,15 @@ class Game {
   }
 
   bool podeSerResolvido() {
-    final numerosBack = numeros.map((n) => n.obterClone()).toList();
+    final numerosBack = obterBackup();
     resolver();
     final vazio = obterPrimeiroVazio();
     numeros = numerosBack;
     return vazio == null;
+  }
+
+  List<Numero> obterBackup() {
+    return numeros.map((n) => n.obterClone()).toList();
   }
 
   int calcularNumeroDoQuadrante(int linha, int coluna) {
@@ -161,16 +169,18 @@ enum Nivel {
 }
 
 class Numero {
-  late Game game;
-  late int linha;
-  late int coluna;
-  late int quadrante;
+  final int index;
+  final Game game;
+  final int linha;
+  final int coluna;
+  final int quadrante;
   int valor = 0;
-  List<int> anotacoes = [];
+  final List<int> anotacoes;
   bool get isRevelado => valor > 0;
   bool get isDiagonal => [1, 3, 5, 7, 9].contains(quadrante);
 
   Numero({
+    required this.index,
     required this.game,
     required this.linha,
     required this.coluna,
@@ -181,6 +191,7 @@ class Numero {
 
   Numero obterClone() {
     return Numero(
+      index: index,
       coluna: coluna,
       linha: linha,
       valor: valor,
@@ -215,9 +226,10 @@ class Numero {
     if (!isOpcaoValida(input)) {
       return false;
     }
+    final backup = game.obterBackup();
     valor = input;
     if (!game.podeSerResolvido()) {
-      valor = 0;
+      game.numeros = backup;
       return false;
     }
     final numerosParaRemoverAnotacao = game.numeros
@@ -245,9 +257,6 @@ class Numero {
   }
 
   bool isEqualTo(Numero? numero) {
-    if (numero == null) {
-      return false;
-    }
-    return numero.linha == linha && numero.coluna == coluna;
+    return numero != null && numero.index == index;
   }
 }
