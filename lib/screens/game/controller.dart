@@ -35,7 +35,7 @@ class GameController extends GetxController {
     _jogoIniciado.value = true;
   }
 
-  finalizar() {
+  reiniciar() {
     _jogoIniciado.value = false;
     _jogoFinalizado.value = false;
   }

@@ -58,25 +58,26 @@ class SudokuGrid extends StatelessWidget {
 
   Widget getGridAnotacoes(Numero numero) {
     return GridView.count(
-        padding: EdgeInsets.zero,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: 3,
-        children: [
-          for (var n in lista9)
-            if (numero.anotacoes.contains(n))
-              Center(
-                child: Text(
-                  n.toString(),
-                  style: const TextStyle(
-                    fontSize: 13,
-                    letterSpacing: 0,
-                    height: 1,
-                  ),
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      children: [
+        for (var n in lista9)
+          if (numero.anotacoes.contains(n))
+            Center(
+              child: Text(
+                n.toString(),
+                style: const TextStyle(
+                  fontSize: 13,
+                  letterSpacing: 0,
+                  height: 1,
                 ),
-              )
-            else
-              const SizedBox.shrink()
-        ]);
+              ),
+            )
+          else
+            const SizedBox.shrink()
+      ],
+    );
   }
 
   Container getContainerNumero(Color color, Numero numero) {

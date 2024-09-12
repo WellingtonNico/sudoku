@@ -77,8 +77,8 @@ class GameScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 if (isFinalizado)
                   ElevatedButton(
-                    onPressed: controller.finalizar,
-                    child: const Text('Finalizar'),
+                    onPressed: controller.reiniciar,
+                    child: const Text('Reiniciar'),
                   )
                 else
                   const SudokuTeclado(),
