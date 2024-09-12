@@ -64,7 +64,7 @@ class GameScreen extends StatelessWidget {
                       onPressed: controller.gerarAnotacoes,
                       icon: gerandoAnotacoes
                           ? const CircularProgressIndicator()
-                          : const Icon(Icons.edit_calendar_outlined),
+                          : const Icon(Icons.format_list_numbered),
                     ),
                     const SizedBox(width: 20)
                   ],
