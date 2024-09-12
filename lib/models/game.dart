@@ -52,13 +52,12 @@ class Game {
       for (int coluna = 1; coluna <= 9; coluna++) {
         numeros.add(
           Numero(
-            game: this,
-            linha: linha,
-            coluna: coluna,
-            quadrante: calcularNumeroDoQuadrante(linha, coluna),
-            valor: 0,
-            anotacoes: []
-          ),
+              game: this,
+              linha: linha,
+              coluna: coluna,
+              quadrante: calcularNumeroDoQuadrante(linha, coluna),
+              valor: 0,
+              anotacoes: []),
         );
       }
     }
@@ -113,9 +112,10 @@ class Game {
 
   bool podeSerResolvido() {
     final numerosBack = numeros.map((n) => n.obterClone()).toList();
-    final result = resolver();
+    resolver();
+    final vazio = obterPrimeiroVazio();
     numeros = numerosBack;
-    return result;
+    return vazio == null;
   }
 
   int calcularNumeroDoQuadrante(int linha, int coluna) {
@@ -176,7 +176,7 @@ class Numero {
     required this.coluna,
     required this.quadrante,
     required this.valor,
-    required this.anotacoes ,
+    required this.anotacoes,
   });
 
   Numero obterClone() {
