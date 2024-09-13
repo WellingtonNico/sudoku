@@ -76,9 +76,9 @@ class GameController extends GetxController {
       _quantidadeDeErros.value++;
       if (_quantidadeDeErros.value >= 3) {
         _jogoIniciado.value = false;
-      }      
-      HapticFeedback.vibrate();       
-    } 
+      }
+      HapticFeedback.vibrate();
+    }
     _numeroEmFoco.refresh();
     _game.refresh();
     _jogoFinalizado.value = game.obterIsFinalizado();
@@ -88,5 +88,18 @@ class GameController extends GetxController {
     numeroEmFoco!.onAnotate(input);
     _game.refresh();
     _numeroEmFoco.refresh();
+  }
+
+  limparNumeroEmFoco() {
+    if (numeroEmFoco != null) {
+      game.numeros[numeroEmFoco!.index].valor = 0;
+      _numeroEmFoco.refresh();
+      _game.refresh();
+    }
+  }
+
+  desfazerJogada() {
+    game.desfazerJogada();
+    _game.refresh();
   }
 }

@@ -45,36 +45,38 @@ class GameScreen extends StatelessWidget {
             );
           }
 
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      onPressed: controller.gerarAnotacoes,
-                      icon: gerandoAnotacoes
-                          ? const CircularProgressIndicator()
-                          : const Icon(Icons.format_list_numbered),
-                    ),
-                    const SizedBox(width: 20)
-                  ],
-                ),
-                const Text('Sudoku', style: TextStyle(fontSize: 35)),
-                const SizedBox(height: 20),
-                const SudokuInformacoes(),
-                const SizedBox(height: 10),
-                const SudokuGrid(),
-                const SizedBox(height: 20),
-                if (isFinalizado)
-                  ElevatedButton(
-                    onPressed: controller.reiniciar,
-                    child: const Text('Reiniciar'),
-                  )
-                else
-                  const SudokuTeclado(),
-              ],
+          return SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [       
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: controller.gerarAnotacoes,
+                        icon: gerandoAnotacoes
+                            ? const CircularProgressIndicator()
+                            : const Icon(Icons.format_list_numbered),
+                      ),
+                      const SizedBox(width: 20)
+                    ],
+                  ),
+                  const Text('Sudoku', style: TextStyle(fontSize: 35)),
+                  const SizedBox(height: 20),
+                  const SudokuInformacoes(),
+                  const SizedBox(height: 10),
+                  const SudokuGrid(),
+                  const SizedBox(height: 20),
+                  if (isFinalizado)
+                    ElevatedButton(
+                      onPressed: controller.reiniciar,
+                      child: const Text('Reiniciar'),
+                    )
+                  else
+                    const SudokuTeclado(),
+                ],
+              ),
             ),
           );
         },

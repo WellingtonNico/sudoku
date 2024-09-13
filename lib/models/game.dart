@@ -12,13 +12,14 @@ class Game {
     "Extremo": 60,
     "Especialista": 64,
   };
-  
+
   List<Numero> numeros = [];
   int quantidadeDeErros = 0;
   bool isIniciado = false;
   bool isFinalizado = false;
   late String nivel;
   List<int> backup = [];
+  List<int> jogadas = [];
 
   getQuantidadeCasasVazias() {
     return niveis[nivel];
@@ -111,6 +112,7 @@ class Game {
       int index = rand.nextInt(81);
       if (numeros[index].valor > 0) {
         numeros[index].valor = 0;
+        numeros[index].isDica = false;        
         qtdCasasParaRemover--;
       }
     }
@@ -132,6 +134,13 @@ class Game {
 
   gerarBackup() {
     backup = numeros.map((n) => n.valor).toList();
+  }
+
+  desfazerJogada() {
+    if (jogadas.isNotEmpty) {
+      final index = jogadas.removeLast();
+      numeros[index].valor = 0;
+    }
   }
 
   int calcularNumeroDoQuadrante(int linha, int coluna) {
@@ -166,7 +175,6 @@ class Game {
   }
 }
 
-
 class Numero {
   final int index;
   final Game game;
@@ -177,6 +185,7 @@ class Numero {
   final List<int> anotacoes;
   bool get isRevelado => valor > 0;
   bool get isDiagonal => [1, 3, 5, 7, 9].contains(quadrante);
+  bool isDica = true;
 
   Numero({
     required this.index,
@@ -240,6 +249,7 @@ class Numero {
     for (Numero numero in numerosParaRemoverAnotacao) {
       numero.removerAnotacao(input);
     }
+    game.jogadas.add(index);
     return true;
   }
 

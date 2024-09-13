@@ -11,19 +11,55 @@ class SudokuTeclado extends StatelessWidget {
   Widget build(BuildContext context) {
     GameController controller = Get.find();
     return Obx(() {
-      final opacity = controller.numeroEmFoco?.isRevelado == false ? 1.0 : 0.0;
-      return Opacity(
-        opacity: opacity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+      final exibirNumeros = controller.numeroEmFoco?.isRevelado == true;
+      final exibirBotaoLimpar = controller.numeroEmFoco?.isDica == false &&
+          controller.numeroEmFoco?.isRevelado == true;
+      final possuiJogadas = controller.game.jogadas.isNotEmpty;
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!exibirNumeros) ...[
             getBotoesNumeros(
-                20, opacity == 1 ? controller.onAnotate : null, true),
+              20,
+              controller.onAnotate,
+              true,
+            ),
             const SizedBox(height: 20),
             getBotoesNumeros(
-                30, opacity == 1 ? controller.onInput : null, false),
+              30,
+              controller.onInput,
+              false,
+            ),
           ],
-        ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              if (possuiJogadas)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: controller.desfazerJogada,
+                      icon: const Icon(Icons.undo_outlined),
+                    ),
+                    const Text('Desfazer')
+                  ],
+                ),
+              if (exibirBotaoLimpar)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: controller.limparNumeroEmFoco,
+                      icon: const Icon(Icons.cleaning_services_outlined),
+                    ),
+                    const Text('Limpar')
+                  ],
+                )
+            ],
+          )
+        ],
       );
     });
   }
@@ -43,7 +79,7 @@ class SudokuTeclado extends StatelessWidget {
                 width: 35,
                 decoration: BoxDecoration(
                   color: isAnotacao && anotacoes.contains(n)
-                      ?  Colors.blueAccent
+                      ? Colors.blueAccent
                       : const Color.fromARGB(135, 210, 210, 210),
                   borderRadius: BorderRadius.circular(5),
                 ),
