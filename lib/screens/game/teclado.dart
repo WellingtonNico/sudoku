@@ -11,14 +11,14 @@ class SudokuTeclado extends StatelessWidget {
   Widget build(BuildContext context) {
     GameController controller = Get.find();
     return Obx(() {
-      final exibirNumeros = controller.numeroEmFoco?.isRevelado == true;
+      final exibirNumeros = controller.numeroEmFoco?.isRevelado == false;
       final exibirBotaoLimpar = controller.numeroEmFoco?.isDica == false &&
           controller.numeroEmFoco?.isRevelado == true;
       final possuiJogadas = controller.game.jogadas.isNotEmpty;
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!exibirNumeros) ...[
+          if (exibirNumeros) ...[
             getBotoesNumeros(
               20,
               controller.onAnotate,

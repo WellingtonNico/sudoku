@@ -41,6 +41,7 @@ class Game {
 
   void inicializar(String nivel) {
     this.nivel = nivel;
+    jogadas = [];
     criarNumeros();
     preencherQuadrantesDiagonais();
     resolver();
