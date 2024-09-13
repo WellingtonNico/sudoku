@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/state_manager.dart';
 import 'package:sudoku/models/game.dart';
 
@@ -75,8 +76,9 @@ class GameController extends GetxController {
       _quantidadeDeErros.value++;
       if (_quantidadeDeErros.value >= 3) {
         _jogoIniciado.value = false;
-      }
-    } else {}
+      }      
+      HapticFeedback.vibrate();       
+    } 
     _numeroEmFoco.refresh();
     _game.refresh();
     _jogoFinalizado.value = game.obterIsFinalizado();
