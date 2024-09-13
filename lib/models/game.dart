@@ -10,7 +10,9 @@ class Game {
     "Médio": 50,
     "Difícil": 55,
     "Extremo": 60,
+    "Especialista": 64,
   };
+  
   List<Numero> numeros = [];
   int quantidadeDeErros = 0;
   bool isIniciado = false;
