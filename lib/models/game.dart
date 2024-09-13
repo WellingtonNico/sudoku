@@ -227,6 +227,7 @@ class Numero {
     valor = input;
     if (!game.podeSerResolvido()) {
       game.restaurarBackup();
+      valor = 0;
       return false;
     }
     valor = input;
