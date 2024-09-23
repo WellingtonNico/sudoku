@@ -43,7 +43,6 @@ class Game {
     this.nivel = nivel;
     jogadas = [];
     criarNumeros();
-    preencherQuadrantesDiagonais();
     resolver();
     removerCasasAleatorias();
     quantidadeDeErros = 0;
@@ -71,21 +70,12 @@ class Game {
     }
   }
 
-  void preencherQuadrantesDiagonais() {
-    for (int quadrante in [1, 5, 9]) {
-      final numerosDoQuadrante = obterNumerosDoQuadrante(quadrante);
-      for (final n in numerosDoQuadrante) {
-        Random rand = Random();
-        int? valor;
-        do {
-          valor = rand.nextInt(9) + 1;
-        } while (!n.isOpcaoValida(valor));
-        n.valor = valor;
-      }
-    }
-  }
-
   Numero? obterPrimeiroVazio() {
+    final numeroDiagonal = numeros.firstWhereOrNull(
+        (n) => [1, 5, 9].contains(n.quadrante) && n.valor == 0);
+    if (numeroDiagonal != null) {
+      return numeroDiagonal;
+    }
     return numeros.firstWhereOrNull((n) => n.valor == 0);
   }
 
@@ -100,7 +90,7 @@ class Game {
         if (resolver()) {
           return true;
         }
-        vazio.valor = 0;
+        vazio.valor = 0;    
       }
     }
     return false;
@@ -113,7 +103,7 @@ class Game {
       int index = rand.nextInt(81);
       if (numeros[index].valor > 0) {
         numeros[index].valor = 0;
-        numeros[index].isDica = false;        
+        numeros[index].isDica = false;
         qtdCasasParaRemover--;
       }
     }
