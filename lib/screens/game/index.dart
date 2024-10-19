@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/state_manager.dart';
 import 'package:sudoku/screens/game/controller.dart';
 import 'package:sudoku/screens/game/grid.dart';
 import 'package:sudoku/screens/game/informacoes.dart';
@@ -13,7 +11,7 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GameController(nivel));
+    final controller = Get.put(GameController(nivel: nivel));
     return PopScope(
       onPopInvoked: (_) => Get.delete<GameController>(),
       child: Scaffold(
@@ -38,7 +36,6 @@ class GameScreen extends StatelessWidget {
         body: SafeArea(
           child: Obx(
             () {
-              final isFinalizado = controller.jogoFinalizado;
               if (controller.iniciandoJogo) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -54,7 +51,7 @@ class GameScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     const SudokuGrid(),
                     const SizedBox(height: 20),
-                    if (isFinalizado)
+                    if (controller.jogoFinalizado)
                       ElevatedButton(
                         onPressed: controller.reiniciar,
                         child: const Text('Reiniciar'),

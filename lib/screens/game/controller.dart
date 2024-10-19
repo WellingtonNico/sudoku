@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/state_manager.dart';
 import 'package:sudoku/models/game.dart';
 
@@ -7,42 +6,36 @@ class GameController extends GetxController {
   late final Rx<Game> _game = Rx(Game());
   Game get game => _game.value;
 
+  late final String nivel;
+
   final Rx<Numero?> _numeroEmFoco = Rx(null);
   Numero? get numeroEmFoco => _numeroEmFoco.value;
 
   final RxBool _iniciandoJogo = RxBool(true);
   bool get iniciandoJogo => _iniciandoJogo.value;
 
-  final RxBool _jogoIniciado = RxBool(false);
-  bool get jogoIniciado => _jogoIniciado.value;
-
   final RxBool _jogoFinalizado = RxBool(false);
   bool get jogoFinalizado => _jogoFinalizado.value;
-
-  final RxInt _quantidadeDeErros = RxInt(0);
-  int get quantidadeDeErros => _quantidadeDeErros.value;
 
   final RxBool _gerandoAnotacoes = RxBool(false);
   bool get gerandoAnotacoes => _gerandoAnotacoes.value;
 
-  GameController(String nivel){
-    iniciarGame(nivel);
+  GameController({required this.nivel}) {
+    iniciarGame();
   }
 
-  iniciarGame(String nivel) async {
-    _game.value = Game();    
-    _numeroEmFoco.value = null;
-    _jogoIniciado.value = false;
-    _quantidadeDeErros.value = 0;    
+  iniciarGame() async {
+    _iniciandoJogo.value = true;
+    _game.value = Game();
+    _numeroEmFoco.value = null;    
     _game.value.inicializar(nivel);
     _game.refresh();
     _iniciandoJogo.value = false;
-    _jogoIniciado.value = true;
+    _jogoFinalizado.value = false;
   }
 
   reiniciar() {
-    _jogoIniciado.value = false;
-    _jogoFinalizado.value = false;
+    iniciarGame();
   }
 
   gerarAnotacoes() {
@@ -76,13 +69,7 @@ class GameController extends GetxController {
   }
 
   onInput(int valor) {
-    if (!numeroEmFoco!.onInput(valor)) {
-      _quantidadeDeErros.value++;
-      if (_quantidadeDeErros.value >= 3) {
-        _jogoIniciado.value = false;
-      }
-      HapticFeedback.vibrate();
-    }
+    numeroEmFoco!.onInput(valor);
     _numeroEmFoco.refresh();
     _game.refresh();
     _jogoFinalizado.value = game.obterIsFinalizado();

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 const lista9 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -32,7 +33,7 @@ class Game {
   }
 
   bool obterIsFinalizado() {
-    return numeros.every((n) => n.isRevelado);
+    return quantidadeDeErros >= 3 || numeros.every((n) => n.isRevelado);
   }
 
   int obterQuantidadeRevelados() {
@@ -228,6 +229,8 @@ class Numero {
 
   bool onInput(int input) {
     if (!isOpcaoValida(input)) {
+      game.quantidadeDeErros++;
+      HapticFeedback.vibrate();
       return false;
     }
     game.gerarBackup();
