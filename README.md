@@ -1,5 +1,7 @@
 # sudoku
+
 It's a simple free Sudoku game. Just clone, build and run it!
+
 <img src="./images/sample.gif" alt="drawing" height="700px"/>
 
 ## Game images
