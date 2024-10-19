@@ -4,13 +4,13 @@ import 'package:get/state_manager.dart';
 import 'package:sudoku/models/game.dart';
 
 class GameController extends GetxController {
-  final Rx<Game> _game = Rx(Game());
+  late final Rx<Game> _game = Rx(Game());
   Game get game => _game.value;
 
   final Rx<Numero?> _numeroEmFoco = Rx(null);
   Numero? get numeroEmFoco => _numeroEmFoco.value;
 
-  final RxBool _iniciandoJogo = RxBool(false);
+  final RxBool _iniciandoJogo = RxBool(true);
   bool get iniciandoJogo => _iniciandoJogo.value;
 
   final RxBool _jogoIniciado = RxBool(false);
@@ -25,11 +25,15 @@ class GameController extends GetxController {
   final RxBool _gerandoAnotacoes = RxBool(false);
   bool get gerandoAnotacoes => _gerandoAnotacoes.value;
 
+  GameController(String nivel){
+    iniciarGame(nivel);
+  }
+
   iniciarGame(String nivel) async {
+    _game.value = Game();    
     _numeroEmFoco.value = null;
     _jogoIniciado.value = false;
-    _quantidadeDeErros.value = 0;
-    _iniciandoJogo.value = true;
+    _quantidadeDeErros.value = 0;    
     _game.value.inicializar(nivel);
     _game.refresh();
     _iniciandoJogo.value = false;

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 const lista9 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 class Game {
-  final niveis = {
+  static const niveis = {
     "Fácil": 45,
     "Médio": 50,
     "Difícil": 55,
@@ -76,6 +76,11 @@ class Game {
     if (numeroDiagonal != null) {
       return numeroDiagonal;
     }
+    final numeroDasQuinasRestantes = numeros
+        .firstWhereOrNull((n) => [3, 7].contains(n.quadrante) && n.valor == 0);
+    if (numeroDasQuinasRestantes != null) {
+      return numeroDasQuinasRestantes;
+    }
     return numeros.firstWhereOrNull((n) => n.valor == 0);
   }
 
@@ -90,7 +95,7 @@ class Game {
         if (resolver()) {
           return true;
         }
-        vazio.valor = 0;    
+        vazio.valor = 0;
       }
     }
     return false;

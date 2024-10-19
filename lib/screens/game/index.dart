@@ -7,61 +7,44 @@ import 'package:sudoku/screens/game/informacoes.dart';
 import 'package:sudoku/screens/game/teclado.dart';
 
 class GameScreen extends StatelessWidget {
-  const GameScreen({super.key});
+  final String nivel;
+  const GameScreen({super.key, required this.nivel});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GameController());
+    final controller = Get.put(GameController(nivel));
     return Scaffold(
-      body: Obx(
-        () {
-          final isFinalizado = controller.jogoFinalizado;
-          final gerandoAnotacoes = controller.gerandoAnotacoes;
-          if (controller.iniciandoJogo) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (!controller.jogoIniciado) {
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Obx(
+          () => AppBar(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
+            actions: [
+              IconButton(
+                onPressed: controller.gerarAnotacoes,
+                icon: controller.gerandoAnotacoes
+                    ? const CircularProgressIndicator()
+                    : const Icon(Icons.mode_edit_outlined),
+              ),
+              const SizedBox(width: 20)
+            ],
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Obx(
+          () {
+            final isFinalizado = controller.jogoFinalizado;
+            if (controller.iniciandoJogo) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             return Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text('Sudoku', style: TextStyle(fontSize: 35)),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Selecione o nível do jogo',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  for (var entry in controller.game.niveis.entries)
-                    ElevatedButton(
-                      onPressed: () => controller.iniciarGame(entry.key),
-                      child: Text(entry.key),
-                    ),
-                ],
-              ),
-            );
-          }
-
-          return SafeArea(
-            child: Center(
-              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [       
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: controller.gerarAnotacoes,
-                        icon: gerandoAnotacoes
-                            ? const CircularProgressIndicator()
-                            : const Icon(Icons.format_list_numbered),
-                      ),
-                      const SizedBox(width: 20)
-                    ],
-                  ),
+                children: [
                   const Text('Sudoku', style: TextStyle(fontSize: 35)),
                   const SizedBox(height: 20),
                   const SudokuInformacoes(),
@@ -77,9 +60,9 @@ class GameScreen extends StatelessWidget {
                     const SudokuTeclado(),
                 ],
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
