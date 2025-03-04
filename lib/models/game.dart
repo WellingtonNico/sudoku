@@ -71,6 +71,8 @@ class Game {
     }
   }
 
+  void preencherQuadrantesDiagonaisComNumerosAleatorios() {}
+
   Numero? obterPrimeiroVazio() {
     final numeroDiagonal = numeros.firstWhereOrNull(
         (n) => [1, 5, 9].contains(n.quadrante) && n.valor == 0);
@@ -90,9 +92,12 @@ class Game {
     if (vazio == null) {
       return true;
     }
-    for (int n = 1; n <= 9; n++) {
-      if (vazio.isOpcaoValida(n)) {
-        vazio.valor = n;
+    final valoresDisponiveis = [...lista9];
+    valoresDisponiveis.shuffle();
+    for (int n = 0; n < 9; n++) {
+      final possivelValor = valoresDisponiveis[n];
+      if (vazio.isOpcaoValida(possivelValor)) {
+        vazio.valor = possivelValor;
         if (resolver()) {
           return true;
         }
