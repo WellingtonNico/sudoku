@@ -19,7 +19,6 @@ class GameScreen extends StatelessWidget {
           preferredSize: const Size.fromHeight(60),
           child: Obx(
             () => AppBar(
-              foregroundColor: Colors.white,
               backgroundColor: Colors.transparent,
               actions: [
                 IconButton(

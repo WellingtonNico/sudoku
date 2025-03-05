@@ -48,17 +48,17 @@ class GameController extends GetxController {
     _gerandoAnotacoes.value = false;
   }
 
-  Color getCorDoNumero(Numero numero) {
+  Color getCorDoNumero(Numero numero, BuildContext context) {
     if (numero.isEqualTo(numeroEmFoco)) {
-      return Colors.blueAccent;
+      return Theme.of(context).colorScheme.primary;
     }
     if (numeroEmFoco != null &&
         (numero.quadrante == numeroEmFoco!.quadrante ||
             numero.linha == numeroEmFoco!.linha ||
             numero.coluna == numeroEmFoco!.coluna)) {
-      return const Color.fromARGB(255, 82, 82, 82);
+      return Theme.of(context).colorScheme.secondary;
     }
-    return Colors.grey[600]!;
+    return Theme.of(context).colorScheme.tertiary;
   }
 
   onTapNumero(Numero numero) {

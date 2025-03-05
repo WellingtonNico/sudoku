@@ -14,7 +14,7 @@ class SudokuGrid extends StatelessWidget {
       final numeros = controller.game.numeros;
       final quadrantes = obterNumerosPorQuadranteOrdenados(numeros);
       return Container(
-        color: Colors.white60,
+        color: Theme.of(context).colorScheme.primary,
         width: MediaQuery.of(context).size.width - 20,
         child: GridView.count(
           mainAxisSpacing: 3,
@@ -26,14 +26,15 @@ class SudokuGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 3,
           children: [
-            for (var quadrante in quadrantes) quadranteWidget(quadrante)
+            for (var quadrante in quadrantes)
+              quadranteWidget(quadrante, context)
           ],
         ),
       );
     });
   }
 
-  Widget quadranteWidget(List<Numero> quadrante) {
+  Widget quadranteWidget(List<Numero> quadrante, BuildContext context) {
     GameController controller = Get.find();
     return GridView.count(
       padding: EdgeInsets.zero,
@@ -43,20 +44,16 @@ class SudokuGrid extends StatelessWidget {
       crossAxisCount: 3,
       children: [
         for (var numero in quadrante)
-          Obx(
-            () {
-              final color = controller.getCorDoNumero(numero);
-              return InkWell(
-                onTap: () => controller.onTapNumero(numero),
-                child: containerNumeroWidget(color, numero),
-              );
-            },
-          ),
+          InkWell(
+            onTap: () => controller.onTapNumero(numero),
+            child:
+                containerNumeroWidget(numero, controller.numeroEmFoco, context),
+          )
       ],
     );
   }
 
-  Widget anotacoesWidget(Numero numero) {
+  Widget anotacoesWidget(Numero numero, BuildContext context) {
     return GridView.count(
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
@@ -64,28 +61,40 @@ class SudokuGrid extends StatelessWidget {
       children: [
         for (var n in lista9)
           if (numero.anotacoes.contains(n))
-            numeroAnotadoWidget(n)
+            numeroAnotadoWidget(n, numero, context)
           else
             const SizedBox.shrink()
       ],
     );
   }
 
-  Widget numeroAnotadoWidget(int n) {
+  Widget numeroAnotadoWidget(int valor, Numero numero, BuildContext context) {
     GameController controller = Get.find();
     return Obx(() {
       final valorNumeroEmFoco = controller.numeroEmFoco?.valor;
-      final highlight =
-          valorNumeroEmFoco == n && controller.numeroEmFoco?.isRevelado == true;
+      final highlight = (valorNumeroEmFoco == valor &&
+              controller.numeroEmFoco?.isRevelado == true) ||
+          numero.index == controller.numeroEmFoco?.index;
+      final isFundoSecundario = controller.numeroEmFoco != null &&
+          !highlight &&
+          (controller.numeroEmFoco?.quadrante == numero.quadrante ||
+              controller.numeroEmFoco?.linha == numero.linha ||
+              controller.numeroEmFoco?.coluna == numero.coluna);
+
       return Container(
-        color: highlight ? Colors.blueAccent : null,
+        color: highlight ? Theme.of(context).colorScheme.primary : null,
         child: Center(
           child: Text(
-            n.toString(),
-            style: const TextStyle(
+            valor.toString(),
+            style: TextStyle(
               fontSize: 13,
               letterSpacing: 0,
               height: 1,
+              color: highlight
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : isFundoSecundario
+                      ? Theme.of(context).colorScheme.onSecondary
+                      : null,
             ),
           ),
         ),
@@ -93,17 +102,37 @@ class SudokuGrid extends StatelessWidget {
     });
   }
 
-  Container containerNumeroWidget(Color color, Numero numero) {
+  Container containerNumeroWidget(
+    Numero numero,
+    Numero? numeroEmFoco,
+    BuildContext context,
+  ) {
+    Color corDeFundo;
+    Color corDoTexto;
+    if (numero.isEqualTo(numeroEmFoco)) {
+      corDeFundo = Theme.of(context).colorScheme.primary;
+      corDoTexto = Theme.of(context).colorScheme.onPrimary;
+    } else if (numeroEmFoco != null &&
+        (numero.quadrante == numeroEmFoco.quadrante ||
+            numero.linha == numeroEmFoco.linha ||
+            numero.coluna == numeroEmFoco.coluna)) {
+      corDeFundo = Theme.of(context).colorScheme.secondary;
+      corDoTexto = Theme.of(context).colorScheme.onSecondary;
+    } else {
+      corDeFundo = Theme.of(context).colorScheme.tertiary;
+      corDoTexto = Theme.of(context).colorScheme.onTertiary;
+    }
+
     return Container(
-      color: color,
+      color: corDeFundo,
       child: numero.isRevelado
           ? Center(
               child: Text(
                 numero.valor.toString(),
-                style: const TextStyle(fontSize: 32),
+                style: TextStyle(fontSize: 32, color: corDoTexto),
               ),
             )
-          : anotacoesWidget(numero),
+          : anotacoesWidget(numero, context),
     );
   }
 

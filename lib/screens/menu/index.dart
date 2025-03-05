@@ -8,28 +8,35 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text('Sudoku', style: TextStyle(fontSize: 35)),
-            const SizedBox(height: 20),
-            const Text(
-              'Selecione o nível do jogo',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            for (var entry in Game.niveis.entries)
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => GameScreen(nivel: entry.key),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text('Sudoku', style: TextStyle(fontSize: 35)),
+              const SizedBox(height: 20),
+              const Text(
+                'Selecione o nível do jogo',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              for (var entry in Game.niveis.entries)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) =>
+                            GameScreen(nivel: entry.key),
+                      ),
+                    ),
+                    child: Text(entry.key),
                   ),
                 ),
-                child: Text(entry.key),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

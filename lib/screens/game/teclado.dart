@@ -21,17 +21,9 @@ class SudokuTeclado extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (exibirNumeros) ...[
-            getBotoesNumeros(
-              20,
-              controller.onAnotate,
-              true,
-            ),
+            getBotoesNumeros(20, controller.onAnotate, true, context),
             const SizedBox(height: 20),
-            getBotoesNumeros(
-              30,
-              controller.onInput,
-              false,
-            ),
+            getBotoesNumeros(30, controller.onInput, false, context),
           ],
           const SizedBox(height: 20),
           acoesWidget(possuiJogadas, controller, exibirBotaoLimpar)
@@ -71,8 +63,8 @@ class SudokuTeclado extends StatelessWidget {
     );
   }
 
-  Widget getBotoesNumeros(
-      double fontSize, Function(int)? onTap, bool isAnotacao) {
+  Widget getBotoesNumeros(double fontSize, Function(int)? onTap,
+      bool isAnotacao, BuildContext context) {
     GameController controller = Get.find();
     return Obx(() {
       final anotacoes = controller.numeroEmFoco?.anotacoes ?? [];
@@ -86,14 +78,19 @@ class SudokuTeclado extends StatelessWidget {
                 width: 35,
                 decoration: BoxDecoration(
                   color: isAnotacao && anotacoes.contains(n)
-                      ? Colors.blueAccent
-                      : const Color.fromARGB(135, 210, 210, 210),
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(
                   child: Text(
                     n.toString(),
-                    style: TextStyle(fontSize: fontSize),
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      color: isAnotacao && anotacoes.contains(n)
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Theme.of(context).colorScheme.onSecondary,
+                    ),
                   ),
                 ),
               ),

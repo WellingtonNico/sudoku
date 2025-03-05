@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sudoku/screens/menu/index.dart';
+import 'package:sudoku/themes/configs.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData.dark().copyWith(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          scaffoldBackgroundColor: const Color.fromARGB(255, 44, 44, 44)),
-      themeMode: ThemeMode.dark,
+      theme: woodTheme,
+      themeMode: ThemeMode.light,
       home: const MenuScreen(),
     );
   }
