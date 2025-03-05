@@ -27,7 +27,7 @@ class GameController extends GetxController {
   iniciarGame() async {
     _iniciandoJogo.value = true;
     _game.value = Game();
-    _numeroEmFoco.value = null;    
+    _numeroEmFoco.value = null;
     _game.value.inicializar(nivel);
     _game.refresh();
     _iniciandoJogo.value = false;
@@ -83,7 +83,11 @@ class GameController extends GetxController {
 
   limparNumeroEmFoco() {
     if (numeroEmFoco != null) {
-      game.numeros[numeroEmFoco!.index].valor = 0;
+      if (game.numeros[numeroEmFoco!.index].isRevelado) {
+        game.numeros[numeroEmFoco!.index].isRevelado = false;
+      } else {
+        game.numeros[numeroEmFoco!.index].anotacoes.clear();
+      }
       _numeroEmFoco.refresh();
       _game.refresh();
     }

@@ -13,7 +13,7 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(GameController(nivel: nivel));
     return PopScope(
-      onPopInvoked: (_) => Get.delete<GameController>(),
+      onPopInvokedWithResult: (_, __) => Get.delete<GameController>(),
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),

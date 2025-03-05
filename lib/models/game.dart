@@ -112,8 +112,8 @@ class Game {
     Random rand = Random();
     while (qtdCasasParaRemover > 0) {
       int index = rand.nextInt(81);
-      if (numeros[index].valor > 0) {
-        numeros[index].valor = 0;
+      if (numeros[index].isRevelado) {
+        numeros[index].isRevelado = false;
         numeros[index].isDica = false;
         qtdCasasParaRemover--;
       }
@@ -141,7 +141,7 @@ class Game {
   desfazerJogada() {
     if (jogadas.isNotEmpty) {
       final index = jogadas.removeLast();
-      numeros[index].valor = 0;
+      numeros[index].isRevelado = false;
     }
   }
 
@@ -185,7 +185,7 @@ class Numero {
   final int quadrante;
   int valor = 0;
   final List<int> anotacoes;
-  bool get isRevelado => valor > 0;
+  bool isRevelado = true;
   bool get isDiagonal => [1, 3, 5, 7, 9].contains(quadrante);
   bool isDica = true;
 
@@ -212,7 +212,7 @@ class Numero {
   }
 
   gerarAnotacoes() {
-    if (valor > 0) {
+    if (isRevelado) {
       return;
     }
     for (int i = 1; i <= 9; i++) {
@@ -222,30 +222,24 @@ class Numero {
         }
       }
     }
-    valor = 0;
   }
 
   bool isOpcaoValida(int input) {
     var possiveisDuplicados = game.numeros.where((n) =>
         n.valor == input &&
+        n.isRevelado &&
+        n.index != index &&
         (n.linha == linha || n.coluna == coluna || n.quadrante == quadrante));
     return possiveisDuplicados.isEmpty;
   }
 
   bool onInput(int input) {
-    if (!isOpcaoValida(input)) {
+    if (input != valor) {
       game.quantidadeDeErros++;
       HapticFeedback.vibrate();
       return false;
     }
-    game.gerarBackup();
-    valor = input;
-    if (!game.podeSerResolvido()) {
-      game.restaurarBackup();
-      valor = 0;
-      return false;
-    }
-    valor = input;
+    isRevelado = true;
     final numerosParaRemoverAnotacao = game.numeros
         .where((n) =>
             n.linha == linha || n.coluna == coluna || n.quadrante == quadrante)

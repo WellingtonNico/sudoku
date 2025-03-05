@@ -13,7 +13,9 @@ class SudokuTeclado extends StatelessWidget {
     return Obx(() {
       final exibirNumeros = controller.numeroEmFoco?.isRevelado == false;
       final exibirBotaoLimpar = controller.numeroEmFoco?.isDica == false &&
-          controller.numeroEmFoco?.isRevelado == true;
+              controller.numeroEmFoco?.isRevelado == true ||
+          (controller.numeroEmFoco?.isRevelado == false &&
+              controller.numeroEmFoco?.anotacoes.isEmpty == false);
       final possuiJogadas = controller.game.jogadas.isNotEmpty;
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -32,36 +34,41 @@ class SudokuTeclado extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              if (possuiJogadas)
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: controller.desfazerJogada,
-                      icon: const Icon(Icons.undo_outlined),
-                    ),
-                    const Text('Desfazer')
-                  ],
-                ),
-              if (exibirBotaoLimpar)
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: controller.limparNumeroEmFoco,
-                      icon: const Icon(Icons.cleaning_services_outlined),
-                    ),
-                    const Text('Limpar')
-                  ],
-                )
-            ],
-          )
+          acoesWidget(possuiJogadas, controller, exibirBotaoLimpar)
         ],
       );
     });
+  }
+
+  Row acoesWidget(
+      bool possuiJogadas, GameController controller, bool exibirBotaoLimpar) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        if (possuiJogadas)
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: controller.desfazerJogada,
+                icon: const Icon(Icons.undo_outlined),
+              ),
+              const Text('Desfazer')
+            ],
+          ),
+        if (exibirBotaoLimpar)
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: controller.limparNumeroEmFoco,
+                icon: const Icon(Icons.cleaning_services_outlined),
+              ),
+              const Text('Limpar')
+            ],
+          )
+      ],
+    );
   }
 
   Widget getBotoesNumeros(

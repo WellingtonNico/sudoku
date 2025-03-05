@@ -26,14 +26,14 @@ class SudokuGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 3,
           children: [
-            for (var quadrante in quadrantes) getQuadranteGrid(quadrante)
+            for (var quadrante in quadrantes) quadranteWidget(quadrante)
           ],
         ),
       );
     });
   }
 
-  Widget getQuadranteGrid(List<Numero> quadrante) {
+  Widget quadranteWidget(List<Numero> quadrante) {
     GameController controller = Get.find();
     return GridView.count(
       padding: EdgeInsets.zero,
@@ -48,7 +48,7 @@ class SudokuGrid extends StatelessWidget {
               final color = controller.getCorDoNumero(numero);
               return InkWell(
                 onTap: () => controller.onTapNumero(numero),
-                child: getContainerNumero(color, numero),
+                child: containerNumeroWidget(color, numero),
               );
             },
           ),
@@ -56,50 +56,54 @@ class SudokuGrid extends StatelessWidget {
     );
   }
 
-  Widget getGridAnotacoes(Numero numero) {
-    GameController controller = Get.find();
-    return Obx(
-      () {
-        final valorNumeroEmFoco = controller.numeroEmFoco?.valor;
-        return GridView.count(
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 3,
-          children: [
-            for (var n in lista9)
-              if (numero.anotacoes.contains(n))
-                Container(
-                  color: valorNumeroEmFoco == n ? Colors.blueAccent : null,
-                  child: Center(
-                    child: Text(
-                      n.toString(),
-                      style: const TextStyle(
-                        fontSize: 13,
-                        letterSpacing: 0,
-                        height: 1,
-                      ),
-                    ),
-                  ),
-                )
-              else
-                const SizedBox.shrink()
-          ],
-        );
-      },
+  Widget anotacoesWidget(Numero numero) {
+    return GridView.count(
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      children: [
+        for (var n in lista9)
+          if (numero.anotacoes.contains(n))
+            numeroAnotadoWidget(n)
+          else
+            const SizedBox.shrink()
+      ],
     );
   }
 
-  Container getContainerNumero(Color color, Numero numero) {
+  Widget numeroAnotadoWidget(int n) {
+    GameController controller = Get.find();
+    return Obx(() {
+      final valorNumeroEmFoco = controller.numeroEmFoco?.valor;
+      final highlight =
+          valorNumeroEmFoco == n && controller.numeroEmFoco?.isRevelado == true;
+      return Container(
+        color: highlight ? Colors.blueAccent : null,
+        child: Center(
+          child: Text(
+            n.toString(),
+            style: const TextStyle(
+              fontSize: 13,
+              letterSpacing: 0,
+              height: 1,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Container containerNumeroWidget(Color color, Numero numero) {
     return Container(
       color: color,
-      child: numero.valor > 0
+      child: numero.isRevelado
           ? Center(
               child: Text(
-                numero.valor > 0 ? numero.valor.toString() : '',
-                style: TextStyle(fontSize: numero.valor == 0 ? 15 : 28),
+                numero.valor.toString(),
+                style: const TextStyle(fontSize: 32),
               ),
             )
-          : getGridAnotacoes(numero),
+          : anotacoesWidget(numero),
     );
   }
 
