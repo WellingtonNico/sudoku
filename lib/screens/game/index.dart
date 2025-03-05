@@ -4,6 +4,7 @@ import 'package:sudoku/screens/game/controller.dart';
 import 'package:sudoku/screens/game/grid.dart';
 import 'package:sudoku/screens/game/informacoes.dart';
 import 'package:sudoku/screens/game/teclado.dart';
+import 'package:sudoku/themes/controller.dart';
 
 class GameScreen extends StatelessWidget {
   final String nivel;
@@ -11,31 +12,33 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GameController(nivel: nivel));
+    final GameController gameController = Get.put(GameController(nivel: nivel));
+    final ThemeController themeController = Get.find();
+
     return PopScope(
       onPopInvokedWithResult: (_, __) => Get.delete<GameController>(),
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
-          child: Obx(
-            () => AppBar(
-              backgroundColor: Colors.transparent,
-              actions: [
-                IconButton(
-                  onPressed: controller.gerarAnotacoes,
-                  icon: controller.gerandoAnotacoes
-                      ? const CircularProgressIndicator()
-                      : const Icon(Icons.mode_edit_outlined),
-                ),
-                const SizedBox(width: 20)
-              ],
-            ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            actions: [
+              IconButton(
+                onPressed: themeController.openThemeSelector,
+                icon: const Icon(Icons.palette),
+              ),
+              IconButton(
+                onPressed: gameController.gerarAnotacoes,
+                icon: const Icon(Icons.mode_edit_outlined),
+              ),
+              const SizedBox(width: 20)
+            ],
           ),
         ),
         body: SafeArea(
           child: Obx(
             () {
-              if (controller.iniciandoJogo) {
+              if (gameController.iniciandoJogo) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -50,9 +53,9 @@ class GameScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     const SudokuGrid(),
                     const SizedBox(height: 20),
-                    if (controller.jogoFinalizado)
+                    if (gameController.jogoFinalizado)
                       ElevatedButton(
-                        onPressed: controller.reiniciar,
+                        onPressed: gameController.reiniciar,
                         child: const Text('Reiniciar'),
                       )
                     else

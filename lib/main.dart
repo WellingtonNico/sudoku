@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:sudoku/screens/menu/index.dart';
-import 'package:sudoku/themes/configs.dart';
+import 'package:sudoku/themes/controller.dart';
 
 void main() {
+  Get.put(ThemeController());
   runApp(const MyApp());
 }
 
@@ -14,10 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    return MaterialApp(
-      theme: darkBlueTheme,
-      themeMode: ThemeMode.light,
-      home: const MenuScreen(),
+    final ThemeController controller = Get.find();
+    return Obx(
+      () => GetMaterialApp(
+        theme: controller.themeConfig.themeData,
+        themeMode: ThemeMode.light,
+        home: const MenuScreen(),
+      ),
     );
   }
 }
