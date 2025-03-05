@@ -2,43 +2,43 @@ import 'package:flutter/material.dart';
 
 class ThemeConfig {
   String description;
-  Color darkColor;
-  Color lightColor;
-  Color mediumColor;
-  Color textOnPrimaryColor;
+  Color primaryColor;
+  Color tertiaryColor;
+  Color secondaryColor;
+  Color onPrimaryColor;
 
   ThemeConfig({
     required this.description,
-    required this.darkColor,
-    required this.lightColor,
-    required this.mediumColor,
-    required this.textOnPrimaryColor,
+    required this.primaryColor,
+    required this.tertiaryColor,
+    required this.secondaryColor,
+    required this.onPrimaryColor,
   });
 
   ButtonStyle get buttonStyle => ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(textOnPrimaryColor),
-        backgroundColor: WidgetStatePropertyAll(darkColor),
+        foregroundColor: WidgetStatePropertyAll(onPrimaryColor),
+        backgroundColor: WidgetStatePropertyAll(primaryColor),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         ),
       );
 
   ThemeData get themeData => ThemeData(
-        primaryColor: darkColor,
+        primaryColor: primaryColor,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: darkColor,
-          primary: darkColor,
-          onPrimary: textOnPrimaryColor,
-          surface: darkColor,
-          onSurface: darkColor,
-          secondary: mediumColor,
-          onSecondary: darkColor,
-          tertiary: lightColor,
-          onTertiary: darkColor,
-          primaryContainer: darkColor,
-          surfaceContainer: darkColor,
+          seedColor: primaryColor,
+          primary: primaryColor,
+          onPrimary: onPrimaryColor,
+          surface: primaryColor,
+          onSurface: primaryColor,
+          secondary: secondaryColor,
+          onSecondary: primaryColor,
+          tertiary: tertiaryColor,
+          onTertiary: primaryColor,
+          primaryContainer: primaryColor,
+          surfaceContainer: primaryColor,
         ),
-        scaffoldBackgroundColor: lightColor,
+        scaffoldBackgroundColor: tertiaryColor,
         textButtonTheme: TextButtonThemeData(
           style: buttonStyle,
         ),
@@ -46,8 +46,8 @@ class ThemeConfig {
           style: buttonStyle,
         ),
         iconButtonTheme: IconButtonThemeData(
-          style:
-              ButtonStyle(foregroundColor: WidgetStatePropertyAll(darkColor)),
+          style: ButtonStyle(
+              foregroundColor: WidgetStatePropertyAll(primaryColor)),
         ),
       );
 }
