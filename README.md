@@ -10,12 +10,12 @@ It's a simple free Sudoku game. Just clone, build and run it!
 
 ### Select a level
 
-<img src="./images/print1.png" alt="drawing" height="700px"/>
+<img src="./images/menu.jpeg" alt="drawing" height="700px"/>
 
 ### Create your annotations, manually or by clicking on the button on top right
 
-<img src="./images/print2.png" alt="drawing" height="700px"/>
+<img src="./images/initial-game.jpeg" alt="drawing" height="700px"/>
 
 ### Play!
 
-<img src="./images/print3.png" alt="drawing" height="700px"/>
+<img src="./images/theme-white.jpeg" alt="drawing" height="700px"/>
