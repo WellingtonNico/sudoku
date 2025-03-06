@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sudoku/components/theme_selector_dialog.dart';
 import 'package:sudoku/themes/configs.dart';
 import 'package:sudoku/themes/theme_config.dart';
 
@@ -40,49 +41,7 @@ class ThemeController extends GetxController {
   void openThemeSelector() {
     showDialog(
       context: Get.context!,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            'Selecione o tema',
-            textAlign: TextAlign.center,
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                ...themeOptions
-                    .where((t) => t.name != themeConfig.name)
-                    .map((theme) {
-                  return SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.tertiaryColor,
-                        foregroundColor: theme.primaryColor,
-                      ),
-                      onPressed: () {
-                        setTheme(theme);
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(theme.name),
-                    ),
-                  );
-                }),
-                const SizedBox(height: 20),
-                TextButton(
-                  onPressed: Navigator.of(context).pop,
-                  child: const Text(
-                    "Cancelar",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (_) => const ThemeSelectorDialog(),
     );
   }
 }
