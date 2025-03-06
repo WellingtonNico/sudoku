@@ -186,6 +186,7 @@ class Numero {
   int valor = 0;
   final List<int> anotacoes;
   bool isRevelado = true;
+  bool isReveladoPeloUsuario = false;
   bool get isDiagonal => [1, 3, 5, 7, 9].contains(quadrante);
   bool isDica = true;
 
@@ -240,6 +241,7 @@ class Numero {
       return false;
     }
     isRevelado = true;
+    isReveladoPeloUsuario = true;
     final numerosParaRemoverAnotacao = game.numeros
         .where((n) =>
             n.linha == linha || n.coluna == coluna || n.quadrante == quadrante)

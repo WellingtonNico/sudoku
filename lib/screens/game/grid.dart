@@ -110,15 +110,22 @@ class SudokuGrid extends StatelessWidget {
     Color corDeFundo;
     Color corDoTexto;
     if (numero.isEqualTo(numeroEmFoco)) {
+      // se o número focado é igual a este
       corDeFundo = Theme.of(context).colorScheme.primary;
       corDoTexto = Theme.of(context).colorScheme.onPrimary;
     } else if (numeroEmFoco != null &&
         (numero.quadrante == numeroEmFoco.quadrante ||
             numero.linha == numeroEmFoco.linha ||
             numero.coluna == numeroEmFoco.coluna)) {
+      // se há um número sendo focado e precisa de um highlight no quadrante linha ou coluna
       corDeFundo = Theme.of(context).colorScheme.secondary;
       corDoTexto = Theme.of(context).colorScheme.onSecondary;
+    } else if (numero.isReveladoPeloUsuario) {
+      // se o número foi revelado pelo usuário
+      corDeFundo = Theme.of(context).colorScheme.tertiary;
+      corDoTexto = Theme.of(context).colorScheme.onTertiary.withOpacity(.6);
     } else {
+      // default
       corDeFundo = Theme.of(context).colorScheme.tertiary;
       corDoTexto = Theme.of(context).colorScheme.onTertiary;
     }
