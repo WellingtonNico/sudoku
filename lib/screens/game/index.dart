@@ -27,10 +27,6 @@ class GameScreen extends StatelessWidget {
                 onPressed: themeController.openThemeSelector,
                 icon: const Icon(Icons.palette),
               ),
-              IconButton(
-                onPressed: gameController.gerarAnotacoes,
-                icon: const Icon(Icons.mode_edit_outlined),
-              ),
               const SizedBox(width: 20)
             ],
           ),

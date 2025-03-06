@@ -58,7 +58,17 @@ class SudokuTeclado extends StatelessWidget {
               ),
               const Text('Limpar')
             ],
-          )
+          ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: controller.gerarAnotacoes,
+              icon: const Icon(Icons.flash_auto),
+            ),
+            const Text('Anotações')
+          ],
+        )
       ],
     );
   }
