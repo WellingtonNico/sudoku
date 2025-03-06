@@ -117,6 +117,9 @@ class Game {
       final jaTemUmValorComTodosRemovidos =
           quantidadeRestantePorValor.values.any((v) => v == 0);
 
+      final vaiTerSomenteUmValorTotalmenteRemovido =
+          !(restaSomenteUmDoMesmoValor && jaTemUmValorComTodosRemovidos);
+
       final quadranteTemPeloMenosDoisRestantes = numeros
               .where((n) =>
                   n.quadrante == numeroASerRemovido.quadrante && n.isRevelado)
@@ -125,7 +128,7 @@ class Game {
 
       final podeSerRemovido = numeroASerRemovido.isRevelado &&
           quadranteTemPeloMenosDoisRestantes &&
-          !(restaSomenteUmDoMesmoValor && jaTemUmValorComTodosRemovidos);
+          vaiTerSomenteUmValorTotalmenteRemovido;
 
       if (podeSerRemovido) {
         quantidadeRestantePorValor[numeroASerRemovido.valor] =
