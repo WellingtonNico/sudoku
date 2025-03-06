@@ -3,8 +3,8 @@ import 'package:sudoku/themes/theme_config.dart';
 
 final brownThemeConfig = ThemeConfig(
   name: "Marrom",
-  primaryColor: const Color.fromRGBO(125, 79, 35, 1),
-  secondaryColor: const Color.fromRGBO(196, 151, 91, 1),
+  primaryColor: const Color.fromARGB(255, 100, 61, 25),
+  secondaryColor: const Color.fromARGB(255, 219, 179, 127),
   tertiaryColor: const Color.fromARGB(255, 234, 209, 166),
   onPrimaryColor: Colors.white,
 );
