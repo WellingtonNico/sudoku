@@ -1,7 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:sudoku_dart/sudoku_dart.dart';
 
 const lista9 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -44,7 +44,6 @@ class Game {
     this.nivel = nivel;
     jogadas = [];
     criarNumeros();
-    resolver();
     removerCasasAleatorias();
     quantidadeDeErros = 0;
     isIniciado = true;
@@ -52,9 +51,11 @@ class Game {
 
   void criarNumeros() {
     numeros.clear();
+    final sudoku = Sudoku.generate(Level.expert);
     int index = 0;
     for (int linha = 1; linha <= 9; linha++) {
       for (int coluna = 1; coluna <= 9; coluna++) {
+        final valor = sudoku.solution[index];
         numeros.add(
           Numero(
             index: index,
@@ -62,7 +63,7 @@ class Game {
             linha: linha,
             coluna: coluna,
             quadrante: calcularNumeroDoQuadrante(linha, coluna),
-            valor: 0,
+            valor: valor,
             anotacoes: [],
           ),
         );
@@ -87,55 +88,32 @@ class Game {
     return numeros.firstWhereOrNull((n) => n.valor == 0);
   }
 
-  bool resolver() {
-    final vazio = obterPrimeiroVazio();
-    if (vazio == null) {
-      return true;
-    }
-    final valoresDisponiveis = [...lista9];
-    valoresDisponiveis.shuffle();
-    for (int n = 0; n < 9; n++) {
-      final possivelValor = valoresDisponiveis[n];
-      if (vazio.isOpcaoValida(possivelValor)) {
-        vazio.valor = possivelValor;
-        if (resolver()) {
-          return true;
-        }
-        vazio.valor = 0;
-      }
-    }
-    return false;
-  }
-
   removerCasasAleatorias() {
     var qtdCasasParaRemover = getQuantidadeCasasVazias();
     Random rand = Random();
+
     while (qtdCasasParaRemover > 0) {
       int index = rand.nextInt(81);
-      if (numeros[index].isRevelado) {
+      bool podeSerRemovido = numeros[index].isRevelado
+          // garante que pelo menos um número de cada valor seja revelado
+          &&
+          numeros
+                  .where((n) => n.valor == numeros[index].valor && n.isRevelado)
+                  .length >
+              1
+          // garante que não fique nenhum quadrante vazio
+          &&
+          numeros
+                  .where((n) =>
+                      n.quadrante == numeros[index].quadrante && n.isRevelado)
+                  .length >
+              1;
+      if (podeSerRemovido) {
         numeros[index].isRevelado = false;
         numeros[index].isDica = false;
         qtdCasasParaRemover--;
       }
     }
-  }
-
-  bool podeSerResolvido() {
-    gerarBackup();
-    resolver();
-    final vazio = obterPrimeiroVazio();
-    restaurarBackup();
-    return vazio == null;
-  }
-
-  restaurarBackup() {
-    for (Numero n in numeros) {
-      n.valor = backup[n.index];
-    }
-  }
-
-  gerarBackup() {
-    backup = numeros.map((n) => n.valor).toList();
   }
 
   desfazerJogada() {
@@ -149,31 +127,6 @@ class Game {
     final horizontal = (coluna / 3).ceil();
     final vertical = (linha / 3).ceil();
     return vertical * 3 - (3 - horizontal);
-  }
-
-  List<Numero> obterNumerosDoQuadrante(int quadrante) {
-    return numeros.where((n) => n.quadrante == quadrante).toList();
-  }
-
-  List<int> obterValoresDoQuadrante(int quadrante) {
-    return obterNumerosDoQuadrante(quadrante)
-        .where((n) => n.valor != 0)
-        .map((n) => n.valor)
-        .toList();
-  }
-
-  List<int> obterValoresDaLinha(int linha) {
-    return numeros
-        .where((n) => n.valor != 0 && n.linha == linha)
-        .map((n) => n.valor)
-        .toList();
-  }
-
-  List<int> obterValoresDaColuna(int coluna) {
-    return numeros
-        .where((n) => n.valor != 0 && n.coluna == coluna)
-        .map((n) => n.valor)
-        .toList();
   }
 }
 
@@ -200,18 +153,6 @@ class Numero {
     required this.valor,
     required this.anotacoes,
   });
-
-  Numero obterClone() {
-    return Numero(
-      index: index,
-      coluna: coluna,
-      linha: linha,
-      valor: valor,
-      quadrante: quadrante,
-      game: game,
-      anotacoes: anotacoes,
-    );
-  }
 
   gerarAnotacoes() {
     if (isRevelado) {
@@ -278,7 +219,19 @@ class Numero {
     }
   }
 
-  bool isEqualTo(Numero? numero) {
-    return numero != null && numero.index == index;
+  limpar() {
+    if (isRevelado) {
+      isRevelado = false;
+    } else {
+      anotacoes.clear();
+    }
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Numero && other.index == index;
+  }
+
+  @override
+  int get hashCode => index;
 }

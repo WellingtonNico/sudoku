@@ -373,6 +373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  sudoku_dart:
+    dependency: "direct main"
+    description:
+      name: sudoku_dart
+      sha256: "7cb205f02d1b339c4e514f3257f38f54163b685e725921fcdefb2b2cb056ba80"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   term_glyph:
     dependency: transitive
     description:

@@ -109,7 +109,7 @@ class SudokuGrid extends StatelessWidget {
   ) {
     Color corDeFundo;
     Color corDoTexto;
-    if (numero.isEqualTo(numeroEmFoco)) {
+    if (numero == numeroEmFoco) {
       // se o número focado é igual a este
       corDeFundo = Theme.of(context).colorScheme.primary;
       corDoTexto = Theme.of(context).colorScheme.onPrimary;

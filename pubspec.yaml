@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.6
   flutter_launcher_icons: ^0.14.0
   shared_preferences: ^2.5.2
+  sudoku_dart: ^1.2.0
 
 dev_dependencies:
   flutter_test:

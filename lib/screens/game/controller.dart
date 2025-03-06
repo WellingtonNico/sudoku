@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:sudoku/models/game.dart';
 
@@ -48,19 +47,6 @@ class GameController extends GetxController {
     _gerandoAnotacoes.value = false;
   }
 
-  Color getCorDoNumero(Numero numero, BuildContext context) {
-    if (numero.isEqualTo(numeroEmFoco)) {
-      return Theme.of(context).colorScheme.primary;
-    }
-    if (numeroEmFoco != null &&
-        (numero.quadrante == numeroEmFoco!.quadrante ||
-            numero.linha == numeroEmFoco!.linha ||
-            numero.coluna == numeroEmFoco!.coluna)) {
-      return Theme.of(context).colorScheme.secondary;
-    }
-    return Theme.of(context).colorScheme.tertiary;
-  }
-
   onTapNumero(Numero numero) {
     if (gerandoAnotacoes) {
       return;
@@ -83,11 +69,7 @@ class GameController extends GetxController {
 
   limparNumeroEmFoco() {
     if (numeroEmFoco != null) {
-      if (game.numeros[numeroEmFoco!.index].isRevelado) {
-        game.numeros[numeroEmFoco!.index].isRevelado = false;
-      } else {
-        game.numeros[numeroEmFoco!.index].anotacoes.clear();
-      }
+      game.numeros[numeroEmFoco!.index].limpar();
       _numeroEmFoco.refresh();
       _game.refresh();
     }
