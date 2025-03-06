@@ -2,7 +2,7 @@
 
 It's a simple free Sudoku game. Just clone, build and run it!
 
-`flutter version: 3.24`
+`flutter version: 3.24.2`
 
 <img src="./images/sample.gif" alt="drawing" height="700px"/>
 
