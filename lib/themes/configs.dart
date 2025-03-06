@@ -20,7 +20,7 @@ final darkBlueThemeConfig = ThemeConfig(
 final waterGreenThemeConfig = ThemeConfig(
   name: "Verde água",
   primaryColor: const Color.fromARGB(255, 16, 109, 80),
-  secondaryColor: const Color.fromARGB(255, 141, 218, 205),
+  secondaryColor: const Color.fromARGB(255, 191, 245, 236),
   tertiaryColor: const Color.fromARGB(255, 210, 253, 233),
   onPrimaryColor: Colors.white,
 );
