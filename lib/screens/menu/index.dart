@@ -27,12 +27,6 @@ class MenuScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    // onPressed: () => Navigator.of(context).push(
-                    //   PageRouteBuilder(
-                    //     pageBuilder: (_, __, ___) =>
-                    //         GameScreen(nivel: entry.key),
-                    //   ),
-                    // ),
                     onPressed: () => Get.to(GameScreen(nivel: entry.key)),
                     child: Text(entry.key),
                   ),
