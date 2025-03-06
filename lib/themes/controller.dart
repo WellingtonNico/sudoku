@@ -14,6 +14,7 @@ class ThemeController extends GetxController {
   List<ThemeConfig> themeOptions = [
     whiteThemeConfig,
     brownThemeConfig,
+    brownReverseThemeConfig,
     darkBlueThemeConfig,
     waterGreenThemeConfig,
   ];

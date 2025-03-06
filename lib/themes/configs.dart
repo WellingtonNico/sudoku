@@ -9,6 +9,14 @@ final brownThemeConfig = ThemeConfig(
   onPrimaryColor: Colors.white,
 );
 
+final brownReverseThemeConfig = ThemeConfig(
+  name: "Marrom invertido",
+  primaryColor: const Color.fromARGB(255, 204, 157, 75),
+  secondaryColor: const Color.fromARGB(255, 83, 48, 17),
+  tertiaryColor: const Color.fromARGB(255, 52, 30, 7),
+  onPrimaryColor: Colors.white,
+);
+
 final darkBlueThemeConfig = ThemeConfig(
   name: "Azul escuro",
   primaryColor: const Color.fromRGBO(58, 128, 186, 1),
