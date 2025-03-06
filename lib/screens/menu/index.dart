@@ -10,7 +10,7 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 80),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
