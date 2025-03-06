@@ -135,11 +135,6 @@ class Game {
         qtdCasasParaRemover--;
       }
     }
-    final quantidadeZerados =
-        quantidadeRestantePorValor.values.where((v) => v == 0).length;
-    if (quantidadeZerados > 1) {
-      print("teste");
-    }
   }
 
   desfazerJogada() {
