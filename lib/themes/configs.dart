@@ -27,8 +27,8 @@ final waterGreenThemeConfig = ThemeConfig(
 
 final whiteThemeConfig = ThemeConfig(
   name: "Branco",
-  primaryColor: const Color.fromARGB(255, 39, 91, 137),
-  secondaryColor: const Color.fromARGB(255, 141, 199, 218),
+  primaryColor: const Color.fromARGB(255, 15, 67, 113),
+  secondaryColor: const Color.fromARGB(255, 209, 233, 251),
   tertiaryColor: const Color.fromARGB(255, 255, 255, 255),
   onPrimaryColor: Colors.white,
 );
