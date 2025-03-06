@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku/themes/theme_config.dart';
 
-final woodThemeConfig = ThemeConfig(
-  description: "Madeira",
+final brownThemeConfig = ThemeConfig(
+  name: "Marrom",
   primaryColor: const Color.fromRGBO(125, 79, 35, 1),
   secondaryColor: const Color.fromRGBO(196, 151, 91, 1),
   tertiaryColor: const Color.fromARGB(255, 234, 209, 166),
@@ -10,7 +10,7 @@ final woodThemeConfig = ThemeConfig(
 );
 
 final darkBlueThemeConfig = ThemeConfig(
-  description: "Azul escuro",
+  name: "Azul escuro",
   primaryColor: const Color.fromRGBO(58, 128, 186, 1),
   secondaryColor: const Color.fromRGBO(16, 55, 82, 1),
   tertiaryColor: const Color.fromRGBO(6, 18, 36, 1),
@@ -18,7 +18,7 @@ final darkBlueThemeConfig = ThemeConfig(
 );
 
 final waterGreenThemeConfig = ThemeConfig(
-  description: "Verde água",
+  name: "Verde água",
   primaryColor: const Color.fromARGB(255, 16, 109, 80),
   secondaryColor: const Color.fromARGB(255, 141, 218, 205),
   tertiaryColor: const Color.fromARGB(255, 210, 253, 233),
@@ -26,7 +26,7 @@ final waterGreenThemeConfig = ThemeConfig(
 );
 
 final whiteThemeConfig = ThemeConfig(
-  description: "Branco",
+  name: "Branco",
   primaryColor: const Color.fromARGB(255, 39, 91, 137),
   secondaryColor: const Color.fromARGB(255, 141, 199, 218),
   tertiaryColor: const Color.fromARGB(255, 255, 255, 255),

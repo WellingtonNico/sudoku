@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ThemeConfig {
-  String description;
+  String name;
   Color primaryColor;
   Color tertiaryColor;
   Color secondaryColor;
   Color onPrimaryColor;
 
   ThemeConfig({
-    required this.description,
+    required this.name,
     required this.primaryColor,
     required this.tertiaryColor,
     required this.secondaryColor,

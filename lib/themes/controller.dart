@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku/themes/configs.dart';
 import 'package:sudoku/themes/theme_config.dart';
 
 class ThemeController extends GetxController {
-  final Rx<ThemeConfig> _themeData = Rx(waterGreenThemeConfig);
+  final Rx<ThemeConfig> _themeData = Rx(brownThemeConfig);
 
   ThemeConfig get themeConfig => _themeData.value;
 
+  late SharedPreferences _prefs;
+
   List<ThemeConfig> themeOptions = [
     whiteThemeConfig,
-    woodThemeConfig,
+    brownThemeConfig,
     darkBlueThemeConfig,
     waterGreenThemeConfig,
   ];
 
   void setTheme(ThemeConfig themeConfig) {
+    _prefs.setString("theme", themeConfig.name);
     _themeData.value = themeConfig;
     update();
+  }
+
+  Future<void> loadSavedTheme() async {
+    _prefs = await SharedPreferences.getInstance();
+    String? themeName = _prefs.getString('theme');
+    if (themeName != null) {
+      ThemeConfig theme = themeOptions.firstWhere(
+        (t) => t.name == themeName,
+        orElse: () => brownThemeConfig,
+      );
+      setTheme(theme);
+    }
   }
 
   void openThemeSelector() {
@@ -32,7 +48,9 @@ class ThemeController extends GetxController {
           backgroundColor: Theme.of(Get.context!).colorScheme.tertiary,
           content: SingleChildScrollView(
             child: ListBody(
-              children: themeOptions.map((theme) {
+              children: themeOptions
+                  .where((t) => t.name != themeConfig.name)
+                  .map((theme) {
                 return SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -44,7 +62,7 @@ class ThemeController extends GetxController {
                       setTheme(theme);
                       Navigator.of(context).pop();
                     },
-                    child: Text(theme.description),
+                    child: Text(theme.name),
                   ),
                 );
               }).toList(),

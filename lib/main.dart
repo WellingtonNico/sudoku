@@ -4,8 +4,11 @@ import 'package:get/get.dart';
 import 'package:sudoku/screens/menu/index.dart';
 import 'package:sudoku/themes/controller.dart';
 
-void main() {
-  Get.put(ThemeController());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final ThemeController themeController = ThemeController();
+  await themeController.loadSavedTheme();
+  Get.put(themeController);
   runApp(const MyApp());
 }
 
