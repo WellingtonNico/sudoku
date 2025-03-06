@@ -16,6 +16,8 @@ class ThemeController extends GetxController {
     brownReverseThemeConfig,
     darkBlueThemeConfig,
     waterGreenThemeConfig,
+    blackWithBlueThemeConfig,
+    blackWithGreenThemeConfig
   ];
 
   void setTheme(ThemeConfig themeConfig) {
