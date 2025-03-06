@@ -95,12 +95,6 @@ class Game {
     while (qtdCasasParaRemover > 0) {
       int index = rand.nextInt(81);
       bool podeSerRemovido = numeros[index].isRevelado
-          // garante que pelo menos um número de cada valor seja revelado
-          &&
-          numeros
-                  .where((n) => n.valor == numeros[index].valor && n.isRevelado)
-                  .length >
-              1
           // garante que não fique nenhum quadrante vazio
           &&
           numeros
