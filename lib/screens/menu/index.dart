@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sudoku/components/default_appbar.dart';
 import 'package:sudoku/models/game.dart';
 import 'package:sudoku/screens/game/index.dart';
 
@@ -9,6 +10,7 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const DefaultAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 80),
         child: Center(

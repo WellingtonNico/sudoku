@@ -15,7 +15,7 @@ class SudokuGrid extends StatelessWidget {
       final quadrantes = obterNumerosPorQuadranteOrdenados(numeros);
       return Container(
         color: Theme.of(context).colorScheme.primary,
-        width: MediaQuery.of(context).size.width - 20,
+        width: MediaQuery.of(context).size.width - 10,
         child: GridView.count(
           mainAxisSpacing: 3,
           crossAxisSpacing: 3,

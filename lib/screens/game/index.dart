@@ -26,25 +26,23 @@ class GameScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text('Sudoku', style: TextStyle(fontSize: 35)),
-                    const SizedBox(height: 20),
-                    const SudokuInformacoes(),
-                    const SizedBox(height: 10),
-                    const SudokuGrid(),
-                    const SizedBox(height: 20),
-                    if (gameController.jogoFinalizado)
-                      ElevatedButton(
-                        onPressed: gameController.reiniciar,
-                        child: const Text('Reiniciar'),
-                      )
-                    else
-                      const SudokuTeclado(),
-                  ],
-                ),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text('Sudoku', style: TextStyle(fontSize: 35)),
+                  const SizedBox(height: 20),
+                  const SudokuInformacoes(),
+                  const SizedBox(height: 10),
+                  const SudokuGrid(),
+                  const SizedBox(height: 20),
+                  if (gameController.jogoFinalizado)
+                    ElevatedButton(
+                      onPressed: gameController.reiniciar,
+                      child: const Text('Reiniciar'),
+                    )
+                  else
+                    const SudokuTeclado(),
+                ],
               );
             },
           ),

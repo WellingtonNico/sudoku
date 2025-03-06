@@ -19,33 +19,27 @@ class ThemeSelectorDialog extends StatelessWidget {
         'Selecione o tema',
         textAlign: TextAlign.center,
       ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: const Text(
+            "Cancelar",
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+        )
+      ],
       content: SingleChildScrollView(
         child: Obx(() {
           return ListBody(
-            children: [
-              ...themeOptionsButtons(
-                themeController.themeOptions,
-                themeController.themeConfig,
-                themeController.setTheme,
-              ),
-              const SizedBox(height: 20),
-              cancelButton()
-            ],
+            children: themeOptionsButtons(
+              themeController.themeOptions,
+              themeController.themeConfig,
+              themeController.setTheme,
+            ).toList(),
           );
         }),
-      ),
-    );
-  }
-
-  TextButton cancelButton() {
-    return TextButton(
-      onPressed: Navigator.of(Get.context!).pop,
-      child: const Text(
-        "Cancelar",
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.red,
-        ),
       ),
     );
   }
@@ -65,7 +59,7 @@ class ThemeSelectorDialog extends StatelessWidget {
                 ),
                 onPressed: () {
                   onSelectTheme(theme);
-                  Navigator.of(Get.context!).pop();
+                  Get.back();
                 },
                 child: Text(theme.name),
               ),
