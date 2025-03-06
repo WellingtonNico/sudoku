@@ -6,6 +6,11 @@ import 'package:sudoku/themes/theme_config.dart';
 class ThemeSelectorDialog extends StatelessWidget {
   const ThemeSelectorDialog({super.key});
 
+  static void show() => showDialog(
+        context: Get.context!,
+        builder: (_) => const ThemeSelectorDialog(),
+      );
+
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find();

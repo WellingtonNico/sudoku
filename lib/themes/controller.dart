@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sudoku/components/theme_selector_dialog.dart';
 import 'package:sudoku/themes/configs.dart';
 import 'package:sudoku/themes/theme_config.dart';
 
@@ -36,12 +34,5 @@ class ThemeController extends GetxController {
       );
       setTheme(theme);
     }
-  }
-
-  void openThemeSelector() {
-    showDialog(
-      context: Get.context!,
-      builder: (_) => const ThemeSelectorDialog(),
-    );
   }
 }

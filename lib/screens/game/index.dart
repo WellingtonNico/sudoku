@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sudoku/components/default_appbar.dart';
 import 'package:sudoku/screens/game/controller.dart';
 import 'package:sudoku/screens/game/grid.dart';
 import 'package:sudoku/screens/game/informacoes.dart';
 import 'package:sudoku/screens/game/teclado.dart';
-import 'package:sudoku/themes/controller.dart';
 
 class GameScreen extends StatelessWidget {
   final String nivel;
@@ -13,24 +13,11 @@ class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GameController gameController = Get.put(GameController(nivel: nivel));
-    final ThemeController themeController = Get.find();
 
     return PopScope(
       onPopInvokedWithResult: (_, __) => Get.delete<GameController>(),
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            actions: [
-              IconButton(
-                onPressed: themeController.openThemeSelector,
-                icon: const Icon(Icons.palette),
-              ),
-              const SizedBox(width: 20)
-            ],
-          ),
-        ),
+        appBar: const DefaultAppBar(),
         body: SafeArea(
           child: Obx(
             () {
