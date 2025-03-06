@@ -46,27 +46,39 @@ class ThemeController extends GetxController {
             'Selecione o tema',
             textAlign: TextAlign.center,
           ),
-          backgroundColor: Theme.of(Get.context!).colorScheme.tertiary,
           content: SingleChildScrollView(
             child: ListBody(
-              children: themeOptions
-                  .where((t) => t.name != themeConfig.name)
-                  .map((theme) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.tertiaryColor,
-                      foregroundColor: theme.primaryColor,
+              children: [
+                ...themeOptions
+                    .where((t) => t.name != themeConfig.name)
+                    .map((theme) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.tertiaryColor,
+                        foregroundColor: theme.primaryColor,
+                      ),
+                      onPressed: () {
+                        setTheme(theme);
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(theme.name),
                     ),
-                    onPressed: () {
-                      setTheme(theme);
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(theme.name),
+                  );
+                }),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
                   ),
-                );
-              }).toList(),
+                )
+              ],
             ),
           ),
         );

@@ -39,9 +39,10 @@ class ThemeConfig {
           surfaceContainer: primaryColor,
         ),
         scaffoldBackgroundColor: tertiaryColor,
-        textButtonTheme: TextButtonThemeData(
-          style: buttonStyle,
-        ),
+        // textButtonTheme: TextButtonThemeData(
+        //   style: buttonStyle,
+        // ),
+        dialogBackgroundColor: tertiaryColor,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: buttonStyle,
         ),
