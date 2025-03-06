@@ -92,19 +92,46 @@ class Game {
     var qtdCasasParaRemover = getQuantidadeCasasVazias();
     Random rand = Random();
 
+    final quantidadeRestantePorValor = {
+      1: 9,
+      2: 9,
+      3: 9,
+      4: 9,
+      5: 9,
+      6: 9,
+      7: 9,
+      8: 9,
+      9: 9
+    };
+
     while (qtdCasasParaRemover > 0) {
       int index = rand.nextInt(81);
-      bool podeSerRemovido = numeros[index].isRevelado
-          // garante que não fique nenhum quadrante vazio
-          &&
-          numeros
-                  .where((n) =>
-                      n.quadrante == numeros[index].quadrante && n.isRevelado)
-                  .length >
-              1;
+      final numeroASerRemovido = numeros[index];
+
+      final restaSomenteUmDoMesmoValor = numeros
+              .where(
+                  (n) => n.valor == numeroASerRemovido.valor && !n.isRevelado)
+              .length ==
+          1;
+
+      final jaTemUmValorComTodosRemovidos =
+          quantidadeRestantePorValor.values.any((v) => v == 0);
+
+      final quadranteTemPeloMenosDoisRestantes = numeros
+              .where((n) =>
+                  n.quadrante == numeroASerRemovido.quadrante && n.isRevelado)
+              .length >=
+          2;
+
+      final podeSerRemovido = numeroASerRemovido.isRevelado &&
+          quadranteTemPeloMenosDoisRestantes &&
+          !(restaSomenteUmDoMesmoValor && jaTemUmValorComTodosRemovidos);
+
       if (podeSerRemovido) {
-        numeros[index].isRevelado = false;
-        numeros[index].isDica = false;
+        quantidadeRestantePorValor[numeroASerRemovido.valor] =
+            quantidadeRestantePorValor[numeroASerRemovido.valor]! - 1;
+        numeroASerRemovido.isRevelado = false;
+        numeroASerRemovido.isDica = false;
         qtdCasasParaRemover--;
       }
     }
