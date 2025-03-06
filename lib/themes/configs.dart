@@ -12,8 +12,8 @@ final brownThemeConfig = ThemeConfig(
 final darkBlueThemeConfig = ThemeConfig(
   name: "Azul escuro",
   primaryColor: const Color.fromRGBO(58, 128, 186, 1),
-  secondaryColor: const Color.fromRGBO(16, 55, 82, 1),
-  tertiaryColor: const Color.fromRGBO(6, 18, 36, 1),
+  secondaryColor: const Color.fromARGB(255, 9, 28, 56),
+  tertiaryColor: const Color.fromARGB(255, 5, 15, 31),
   onPrimaryColor: Colors.white,
 );
 
