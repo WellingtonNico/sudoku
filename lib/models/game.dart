@@ -108,11 +108,8 @@ class Game {
       int index = rand.nextInt(81);
       final numeroASerRemovido = numeros[index];
 
-      final restaSomenteUmDoMesmoValor = numeros
-              .where(
-                  (n) => n.valor == numeroASerRemovido.valor && !n.isRevelado)
-              .length ==
-          1;
+      final restaSomenteUmDoMesmoValor =
+          quantidadeRestantePorValor[numeroASerRemovido.valor] == 1;
 
       final jaTemUmValorComTodosRemovidos =
           quantidadeRestantePorValor.values.any((v) => v == 0);
@@ -137,6 +134,11 @@ class Game {
         numeroASerRemovido.isDica = false;
         qtdCasasParaRemover--;
       }
+    }
+    final quantidadeZerados =
+        quantidadeRestantePorValor.values.where((v) => v == 0).length;
+    if (quantidadeZerados > 1) {
+      print("teste");
     }
   }
 
