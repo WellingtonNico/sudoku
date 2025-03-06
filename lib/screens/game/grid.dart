@@ -114,6 +114,13 @@ class SudokuGrid extends StatelessWidget {
       corDeFundo = Theme.of(context).colorScheme.primary;
       corDoTexto = Theme.of(context).colorScheme.onPrimary;
     } else if (numeroEmFoco != null &&
+        numeroEmFoco.valor == numero.valor &&
+        numero.areTodosDoMesmoValorRevelados) {
+      // se o já foram todos revelados do mesmo número
+      corDeFundo = Theme.of(context).colorScheme.secondary;
+      corDoTexto = Theme.of(context).colorScheme.onSecondary;
+    } else if (numeroEmFoco != null &&
+        !numeroEmFoco.areTodosDoMesmoValorRevelados &&
         (numero.quadrante == numeroEmFoco.quadrante ||
             numero.linha == numeroEmFoco.linha ||
             numero.coluna == numeroEmFoco.coluna)) {

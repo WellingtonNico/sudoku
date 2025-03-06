@@ -187,6 +187,7 @@ class Numero {
   final List<int> anotacoes;
   bool isRevelado = true;
   bool isReveladoPeloUsuario = false;
+  bool areTodosDoMesmoValorRevelados = false;
   bool get isDiagonal => [1, 3, 5, 7, 9].contains(quadrante);
   bool isDica = true;
 
@@ -242,6 +243,16 @@ class Numero {
     }
     isRevelado = true;
     isReveladoPeloUsuario = true;
+
+    bool areTodosDoMesmoValorRevelados =
+        game.numeros.where((n) => n.valor == valor && n.isRevelado).length == 9;
+
+    if (areTodosDoMesmoValorRevelados) {
+      for (Numero numero in game.numeros.where((n) => n.valor == valor)) {
+        numero.areTodosDoMesmoValorRevelados = true;
+      }
+    }
+
     final numerosParaRemoverAnotacao = game.numeros
         .where((n) =>
             n.linha == linha || n.coluna == coluna || n.quadrante == quadrante)
