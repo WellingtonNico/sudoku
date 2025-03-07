@@ -50,18 +50,42 @@ class ThemeSelectorDialog extends StatelessWidget {
     Function(ThemeConfig) onSelectTheme,
   ) =>
       themeOptions.where((t) => t.name != currentConfig.name).map(
-            (theme) => SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.tertiaryColor,
-                  foregroundColor: theme.primaryColor,
+            (theme) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: SizedBox(
+                width: double.infinity,
+                height: 55,
+                child: InkWell(
+                  onTap: () {
+                    onSelectTheme(theme);
+                    Get.back();
+                  },
+                  child: Container(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Container(
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                        Flexible(
+                          child: Container(
+                            color: theme.secondaryColor,
+                          ),
+                        ),
+                        Flexible(
+                          child: Container(
+                            color: theme.tertiaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  onSelectTheme(theme);
-                  Get.back();
-                },
-                child: Text(theme.name),
               ),
             ),
           );
