@@ -16,48 +16,51 @@ class GameScreen extends StatelessWidget {
 
     return PopScope(
       onPopInvokedWithResult: (_, __) => Get.delete<GameController>(),
-      child: Scaffold(
-        appBar: const DefaultAppBar(),
-        body: SafeArea(
-          child: Obx(
-            () {
-              if (gameController.iniciandoJogo) {
-                return const Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Sudoku', style: TextStyle(fontSize: 35)),
-                      SizedBox(height: 20),
-                      Text(
-                        "Gerando um jogo maneiro,\naguarde...",
-                        style: TextStyle(fontSize: 24),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      CircularProgressIndicator(),
-                    ],
-                  ),
+      child: GestureDetector(
+        onTap: gameController.removerFoco,
+        child: Scaffold(
+          appBar: const DefaultAppBar(),
+          body: SafeArea(
+            child: Obx(
+              () {
+                if (gameController.iniciandoJogo) {
+                  return const Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Sudoku', style: TextStyle(fontSize: 35)),
+                        SizedBox(height: 20),
+                        Text(
+                          "Gerando um jogo maneiro,\naguarde...",
+                          style: TextStyle(fontSize: 24),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  );
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text('Sudoku', style: TextStyle(fontSize: 35)),
+                    const SizedBox(height: 20),
+                    const SudokuInformacoes(),
+                    const SizedBox(height: 10),
+                    const SudokuGrid(),
+                    const SizedBox(height: 20),
+                    if (gameController.jogoFinalizado)
+                      ElevatedButton(
+                        onPressed: gameController.reiniciar,
+                        child: const Text('Reiniciar'),
+                      )
+                    else
+                      const SudokuTeclado(),
+                  ],
                 );
-              }
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Text('Sudoku', style: TextStyle(fontSize: 35)),
-                  const SizedBox(height: 20),
-                  const SudokuInformacoes(),
-                  const SizedBox(height: 10),
-                  const SudokuGrid(),
-                  const SizedBox(height: 20),
-                  if (gameController.jogoFinalizado)
-                    ElevatedButton(
-                      onPressed: gameController.reiniciar,
-                      child: const Text('Reiniciar'),
-                    )
-                  else
-                    const SudokuTeclado(),
-                ],
-              );
-            },
+              },
+            ),
           ),
         ),
       ),

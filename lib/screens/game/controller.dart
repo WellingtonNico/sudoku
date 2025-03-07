@@ -84,4 +84,9 @@ class GameController extends GetxController {
     game!.limparAnotacoes();
     _game.refresh();
   }
+
+  removerFoco() {
+    _numeroEmFoco.value = null;
+    _numeroEmFoco.refresh();
+  }
 }
