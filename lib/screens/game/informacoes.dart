@@ -18,19 +18,19 @@ class SudokuInformacoes extends StatelessWidget {
           children: [
             SizedBox(
               width: containerWidth,
-              child: Text('${controller.game.obterQuantidadeRevelados()}/81'),
+              child: Text('${controller.game!.obterQuantidadeRevelados()}/81'),
             ),
             SizedBox(
               width: containerWidth,
               child: Text(
-                'Nível ${controller.game.nivel}',
+                'Nível ${controller.game!.nivel}',
                 textAlign: TextAlign.center,
               ),
             ),
             SizedBox(
               width: containerWidth,
               child: Text(
-                'Erros ${controller.game.quantidadeDeErros}/3',
+                'Erros ${controller.game!.quantidadeDeErros}/3',
                 textAlign: TextAlign.end,
               ),
             ),

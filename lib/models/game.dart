@@ -32,6 +32,9 @@ class Game {
     }
   }
 
+  List<int> getPuzzle() =>
+      numeros.map((n) => n.isRevelado ? n.valor : -1).toList();
+
   bool obterIsFinalizado() {
     return quantidadeDeErros >= 3 || numeros.every((n) => n.isRevelado);
   }
@@ -40,8 +43,7 @@ class Game {
     return numeros.where((n) => n.isRevelado).length;
   }
 
-  void inicializar(String nivel) {
-    this.nivel = nivel;
+  Game.fromNivel(this.nivel) {
     jogadas = [];
     criarNumeros();
     removerCasasAleatorias();
@@ -88,7 +90,17 @@ class Game {
     return numeros.firstWhereOrNull((n) => n.valor == 0);
   }
 
-  removerCasasAleatorias() {
+  bool isSolucaoUnica() {
+    final puzzle = getPuzzle();
+    try {
+      Sudoku(puzzle, strict: true);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void removerCasasAleatorias() {
     var qtdCasasParaRemover = getQuantidadeCasasVazias();
     Random rand = Random();
 
@@ -104,7 +116,10 @@ class Game {
       9: 9
     };
 
-    while (qtdCasasParaRemover > 0) {
+    int tentativas = 600;
+
+    while (qtdCasasParaRemover > 0 && tentativas > 0) {
+      tentativas--;
       int index = rand.nextInt(81);
       final numeroASerRemovido = numeros[index];
 
@@ -128,11 +143,15 @@ class Game {
           vaiTerSomenteUmValorTotalmenteRemovido;
 
       if (podeSerRemovido) {
-        quantidadeRestantePorValor[numeroASerRemovido.valor] =
-            quantidadeRestantePorValor[numeroASerRemovido.valor]! - 1;
         numeroASerRemovido.isRevelado = false;
-        numeroASerRemovido.isDica = false;
-        qtdCasasParaRemover--;
+        if (isSolucaoUnica()) {
+          quantidadeRestantePorValor[numeroASerRemovido.valor] =
+              quantidadeRestantePorValor[numeroASerRemovido.valor]! - 1;
+          numeroASerRemovido.isDica = false;
+          qtdCasasParaRemover--;
+        } else {
+          numeroASerRemovido.isRevelado = true;
+        }
       }
     }
   }
@@ -166,7 +185,7 @@ class Numero {
   int valor = 0;
   final List<int> anotacoes;
   bool isRevelado = true;
-  bool isReveladoPeloUsuario = false;
+  bool get isReveladoPeloUsuario => isRevelado && !isDica;
   bool areTodosDoMesmoValorRevelados = false;
   bool get isDiagonal => [1, 3, 5, 7, 9].contains(quadrante);
   bool isDica = true;
@@ -210,7 +229,6 @@ class Numero {
       return false;
     }
     isRevelado = true;
-    isReveladoPeloUsuario = true;
 
     bool areTodosDoMesmoValorRevelados =
         game.numeros.where((n) => n.valor == valor && n.isRevelado).length == 9;

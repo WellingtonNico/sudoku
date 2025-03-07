@@ -23,7 +23,20 @@ class GameScreen extends StatelessWidget {
             () {
               if (gameController.iniciandoJogo) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Sudoku', style: TextStyle(fontSize: 35)),
+                      SizedBox(height: 20),
+                      Text(
+                        "Gerando um jogo maneiro,\naguarde...",
+                        style: TextStyle(fontSize: 24),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
                 );
               }
               return Column(

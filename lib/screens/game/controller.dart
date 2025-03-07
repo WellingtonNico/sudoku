@@ -1,9 +1,11 @@
+import 'dart:isolate';
+
 import 'package:get/state_manager.dart';
 import 'package:sudoku/models/game.dart';
 
 class GameController extends GetxController {
-  late final Rx<Game> _game = Rx(Game());
-  Game get game => _game.value;
+  final Rx<Game?> _game = Rx(null);
+  Game? get game => _game.value;
 
   late final String nivel;
 
@@ -25,10 +27,8 @@ class GameController extends GetxController {
 
   iniciarGame() async {
     _iniciandoJogo.value = true;
-    _game.value = Game();
+    _game.value = await Isolate.run(() => Game.fromNivel(nivel));
     _numeroEmFoco.value = null;
-    _game.value.inicializar(nivel);
-    _game.refresh();
     _iniciandoJogo.value = false;
     _jogoFinalizado.value = false;
   }
@@ -42,7 +42,7 @@ class GameController extends GetxController {
       return;
     }
     _gerandoAnotacoes.value = true;
-    _game.value.gerarAnotacoes();
+    _game.value!.gerarAnotacoes();
     _game.refresh();
     _gerandoAnotacoes.value = false;
   }
@@ -58,7 +58,7 @@ class GameController extends GetxController {
     numeroEmFoco!.onInput(valor);
     _numeroEmFoco.refresh();
     _game.refresh();
-    _jogoFinalizado.value = game.obterIsFinalizado();
+    _jogoFinalizado.value = game!.obterIsFinalizado();
   }
 
   onAnotate(int input) {
@@ -69,19 +69,19 @@ class GameController extends GetxController {
 
   limparNumeroEmFoco() {
     if (numeroEmFoco != null) {
-      game.numeros[numeroEmFoco!.index].limpar();
+      game!.numeros[numeroEmFoco!.index].limpar();
       _numeroEmFoco.refresh();
       _game.refresh();
     }
   }
 
   desfazerJogada() {
-    game.desfazerJogada();
+    game!.desfazerJogada();
     _game.refresh();
   }
 
   limparAnotacoes() {
-    game.limparAnotacoes();
+    game!.limparAnotacoes();
     _game.refresh();
   }
 }

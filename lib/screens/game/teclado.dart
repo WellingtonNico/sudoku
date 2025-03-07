@@ -16,7 +16,7 @@ class SudokuTeclado extends StatelessWidget {
               controller.numeroEmFoco?.isRevelado == true ||
           (controller.numeroEmFoco?.isRevelado == false &&
               controller.numeroEmFoco?.anotacoes.isEmpty == false);
-      final possuiJogadas = controller.game.jogadas.isNotEmpty;
+      final possuiJogadas = controller.game!.jogadas.isNotEmpty;
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
