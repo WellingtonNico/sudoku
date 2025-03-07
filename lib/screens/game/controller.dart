@@ -79,4 +79,9 @@ class GameController extends GetxController {
     game.desfazerJogada();
     _game.refresh();
   }
+
+  limparAnotacoes() {
+    game.limparAnotacoes();
+    _game.refresh();
+  }
 }

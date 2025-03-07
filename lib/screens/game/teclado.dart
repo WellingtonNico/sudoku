@@ -35,6 +35,7 @@ class SudokuTeclado extends StatelessWidget {
   Row acoesWidget(
       bool possuiJogadas, GameController controller, bool exibirBotaoLimpar) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         if (possuiJogadas)
@@ -45,7 +46,7 @@ class SudokuTeclado extends StatelessWidget {
                 onPressed: controller.desfazerJogada,
                 icon: const Icon(Icons.undo_outlined),
               ),
-              const Text('Desfazer')
+              const Text('Desfazer\njogada', textAlign: TextAlign.center)
             ],
           ),
         if (exibirBotaoLimpar)
@@ -56,7 +57,7 @@ class SudokuTeclado extends StatelessWidget {
                 onPressed: controller.limparNumeroEmFoco,
                 icon: const Icon(Icons.cleaning_services_outlined),
               ),
-              const Text('Limpar')
+              const Text('Limpar\nnúmero', textAlign: TextAlign.center)
             ],
           ),
         Column(
@@ -66,7 +67,17 @@ class SudokuTeclado extends StatelessWidget {
               onPressed: controller.gerarAnotacoes,
               icon: const Icon(Icons.flash_auto),
             ),
-            const Text('Anotações')
+            const Text('Gerar\nanotações', textAlign: TextAlign.center)
+          ],
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: controller.limparAnotacoes,
+              icon: const Icon(Icons.clear_all_rounded),
+            ),
+            const Text('Limpar\nAnotações', textAlign: TextAlign.center)
           ],
         )
       ],

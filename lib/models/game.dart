@@ -149,6 +149,12 @@ class Game {
     final vertical = (linha / 3).ceil();
     return vertical * 3 - (3 - horizontal);
   }
+
+  limparAnotacoes() {
+    for (var numero in numeros) {
+      numero.anotacoes.clear();
+    }
+  }
 }
 
 class Numero {
