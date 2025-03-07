@@ -24,9 +24,7 @@ class ThemeSelectorDialog extends StatelessWidget {
           onPressed: Get.back,
           child: const Text(
             "Cancelar",
-            style: TextStyle(
-              color: Colors.red,
-            ),
+            style: TextStyle(color: Colors.red),
           ),
         )
       ],
@@ -68,19 +66,13 @@ class ThemeSelectorDialog extends StatelessWidget {
                     child: Row(
                       children: [
                         Flexible(
-                          child: Container(
-                            color: theme.primaryColor,
-                          ),
+                          child: Container(color: theme.primaryColor),
                         ),
                         Flexible(
-                          child: Container(
-                            color: theme.secondaryColor,
-                          ),
+                          child: Container(color: theme.secondaryColor),
                         ),
                         Flexible(
-                          child: Container(
-                            color: theme.tertiaryColor,
-                          ),
+                          child: Container(color: theme.tertiaryColor),
                         )
                       ],
                     ),
