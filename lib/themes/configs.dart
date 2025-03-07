@@ -14,7 +14,7 @@ final brownReverseThemeConfig = ThemeConfig(
   primaryColor: const Color.fromARGB(255, 247, 199, 116),
   secondaryColor: const Color.fromARGB(255, 83, 48, 17),
   tertiaryColor: const Color.fromARGB(255, 52, 30, 7),
-  onPrimaryColor: Colors.white,
+  onPrimaryColor: const Color.fromARGB(255, 52, 30, 7),
 );
 
 final darkBlueThemeConfig = ThemeConfig(
@@ -22,7 +22,7 @@ final darkBlueThemeConfig = ThemeConfig(
   primaryColor: const Color.fromARGB(255, 96, 177, 242),
   secondaryColor: const Color.fromARGB(255, 9, 28, 56),
   tertiaryColor: const Color.fromARGB(255, 5, 15, 31),
-  onPrimaryColor: Colors.white,
+  onPrimaryColor: const Color.fromARGB(255, 5, 15, 31),
 );
 
 final waterGreenThemeConfig = ThemeConfig(
@@ -43,10 +43,10 @@ final whiteThemeConfig = ThemeConfig(
 
 final blackWithBlueThemeConfig = ThemeConfig(
   name: "Preto e azul",
-  primaryColor: const Color.fromARGB(255, 57, 118, 170),
-  secondaryColor: const Color.fromARGB(255, 23, 45, 62),
+  primaryColor: const Color.fromARGB(255, 93, 172, 240),
+  secondaryColor: const Color.fromARGB(255, 2, 26, 43),
   tertiaryColor: Colors.black,
-  onPrimaryColor: Colors.white,
+  onPrimaryColor: Colors.black,
 );
 
 final blackWithGreenThemeConfig = ThemeConfig(
@@ -54,5 +54,5 @@ final blackWithGreenThemeConfig = ThemeConfig(
   primaryColor: const Color.fromARGB(255, 67, 202, 69),
   secondaryColor: const Color.fromARGB(255, 15, 37, 12),
   tertiaryColor: Colors.black,
-  onPrimaryColor: Colors.white,
+  onPrimaryColor: Colors.black,
 );
