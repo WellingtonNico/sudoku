@@ -24,22 +24,7 @@ class GameScreen extends StatelessWidget {
             child: Obx(
               () {
                 if (gameController.iniciandoJogo) {
-                  return const Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Sudoku', style: TextStyle(fontSize: 35)),
-                        SizedBox(height: 20),
-                        Text(
-                          "Gerando um jogo maneiro,\naguarde...",
-                          style: TextStyle(fontSize: 24),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 20),
-                        CircularProgressIndicator(),
-                      ],
-                    ),
-                  );
+                  return _loadingFeedback();
                 }
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -63,6 +48,31 @@ class GameScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Center _loadingFeedback() {
+    return const Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Sudoku', style: TextStyle(fontSize: 35)),
+          SizedBox(height: 20),
+          Text(
+            "Gerando um jogo maneiro,\naguarde...",
+            style: TextStyle(fontSize: 24),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20),
+          CircularProgressIndicator(),
+          SizedBox(height: 20),
+          Text(
+            "Isso pode demorar um pouco.",
+            style: TextStyle(fontSize: 14),
+          ),
+        ],
       ),
     );
   }
